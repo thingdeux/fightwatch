@@ -1,10 +1,9 @@
 import cherrypy
 import requests
 import os
+import sys
 from jinja2 import Template, Environment, PackageLoader
 
-
-server_mode = "dev"
 the_current_folder = os.path.dirname(os.path.abspath(__file__))
 env = Environment(loader=PackageLoader('main', 'templates'))
 
@@ -74,12 +73,13 @@ def startServer():
 
 if __name__ == "__main__":
 	argument = sys.argv
+	
 	try:
 		argument[1]
-	if argument[1] == "dev":
-		server_mode = argument[1]
-	else:
-		server_mode = "production"
+		if argument[1] == "dev":
+			server_mode = argument[1]
+		else:
+			server_mode = "production"
 	except:
 		server_mode = "production"	
 
