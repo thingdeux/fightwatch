@@ -1,5 +1,19 @@
 {% extends "base.html" %}
 
+{% macro findPadding(streamLength) -%}
+	{% if streamLength == 1 %}
+		<div class = "col-md-5"></div>
+	{% elif streamLength == 2 %}
+		<div class = "col-md-4"></div>
+	{% elif streamLength == 3 %}
+		<div class = "col-md-3"></div>
+	{% else %}
+		<div class = "col-md-2"></div>
+	{% endif %}	
+
+{%- endmacro %}
+
+
 {% block navbar %}
 	{%for stream_category in json %}
 		{% if json[stream_category]['streams']|length > 0 %}
@@ -21,9 +35,9 @@
 							<h1>{{stream_category}}</h1>
 						</div>
 					</div>
-
-					<div class = "container-fluid stream_container center-block">
-						<div class = "col-md-2"></div>
+																					
+					<div class = "container-fluid stream_container center-block">						
+						{{  findPadding(json[stream_category]['streams']|length)  }}
 						{%for stream in json[stream_category]['streams']%}					
 							<div class = "col-md-2 stream_window">
 								<a href="{{stream.channel.url}}">
@@ -31,9 +45,10 @@
 								<h3 class = "text-center">{{ stream.channel.display_name }}</h3></a>
 						        <p class = "text-center">{{ stream.game }}</p>
 						        <p class="text-center">Viewers: {{ stream.viewers }}</p>					        
-							</div>											
+							</div>																	
 						{% endfor %}
-						<div class = "col-md-2"></div>
+						{{  findPadding(json[stream_category]['streams']|length)  }}
+					
 					</div>
 				</div>
 			{% endif %}
