@@ -45,7 +45,7 @@ def startServer():
 	                             'log.screen': False,
 	                             'log.error_file': '/home/thingdeux/webapps/dev/joshandlinz.com/error.log',
 	                             'server.socket_host': '127.0.0.1',
-	                             'server.socket_port': 17472,
+	                             'server.socket_port': 28921,
 	                             })
 
 	conf = {        
@@ -73,4 +73,14 @@ def startServer():
 
 
 if __name__ == "__main__":
+	argument = sys.argv
+	try:
+		argument[1]
+	if argument[1] == "dev":
+		server_mode = argument[1]
+	else:
+		server_mode = "production"
+	except:
+		server_mode = "production"	
+
 	startServer()
