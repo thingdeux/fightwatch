@@ -43,7 +43,7 @@ def startServer():
 	    cherrypy.config.update({ 
 	                             'environment': 'production',
 	                             'log.screen': False,
-	                             'log.error_file': '/home/thingdeux/webapps/dev/joshandlinz.com/error.log',
+	                             'log.error_file': '/home/thingdeux/webapps/fightwatch/fight.watch/error.log',
 	                             'server.socket_host': '127.0.0.1',
 	                             'server.socket_port': 28921,
 	                             })
