@@ -1,0 +1,40 @@
+.navbar {
+	border-radius: 0;
+}
+
+.stream_container {	
+	padding: 30px;		
+}
+
+.stream_window {
+	max-width: 320px;	
+	padding: 10px;
+	margin: 5px;
+	border-width: 1px;
+	border-radius: 3px;
+	background-image: -webkit-gradient(
+			linear,
+			left top,
+			left bottom,
+			color-stop(0.5, #FFFFFF),
+			color-stop(1, #DEDEDE)
+		);
+		background-image: -o-linear-gradient(bottom, #FFFFFF 50%, #DEDEDE 100%);
+		background-image: -moz-linear-gradient(bottom, #FFFFFF 50%, #DEDEDE 100%);
+		background-image: -webkit-linear-gradient(bottom, #FFFFFF 50%, #DEDEDE 100%);
+		background-image: -ms-linear-gradient(bottom, #FFFFFF 50%, #DEDEDE 100%);
+		background-image: linear-gradient(to bottom, #FFFFFF 50%, #DEDEDE 100%);	
+
+	-webkit-box-shadow: -9px 11px 10px 0px rgba(50, 50, 50, 0.61);
+	-moz-box-shadow:    -9px 11px 10px 0px rgba(50, 50, 50, 0.61);
+	box-shadow:         -9px 11px 10px 0px rgba(50, 50, 50, 0.61);
+}
+
+body {
+	background-color: #E0E0E0;
+}
+
+a:link { color: black; text-decoration:none;}
+a:visited { color: black; text-decoration:none;}
+a:hover { color: black; text-decoration:none;}
+a:active { color: black; text-decoration:none;}

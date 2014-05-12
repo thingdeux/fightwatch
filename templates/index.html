@@ -1,0 +1,43 @@
+{% extends "base.html" %}
+
+{% block navbar %}
+	{%for stream_category in json %}
+		{% if json[stream_category]['streams']|length > 0 %}
+			<li><a href="#" class = "site_modify_link" data-target="{{stream_category}}">{{stream_category}}</a></li> 	
+		{% endif %}
+    {% endfor %}
+{% endblock %}
+
+
+{% block body %}
+<div class = "container-fluid">
+	<div class="row">		
+		{%for stream_category in json %}
+			{% if json[stream_category]['streams']|length > 0 %}
+				<div data-id = "{{stream_category}}" class = "container-fluid category_container">
+
+					<div class = "container-fluid">
+						<div class = "col-md-12 text-center">
+							<h1>{{stream_category}}</h1>
+						</div>
+					</div>
+
+					<div class = "container-fluid stream_container center-block">
+						<div class = "col-md-2"></div>
+						{%for stream in json[stream_category]['streams']%}					
+							<div class = "col-md-2 stream_window">
+								<a href="{{stream.channel.url}}">
+								<img src="{{stream.preview.medium}}" class = "img-responsive" alt="Stream Picture"/>						
+								<h3 class = "text-center">{{ stream.channel.display_name }}</h3></a>
+						        <p class = "text-center">{{ stream.game }}</p>
+						        <p class="text-center">Viewers: {{ stream.viewers }}</p>					        
+							</div>											
+						{% endfor %}
+						<div class = "col-md-2"></div>
+					</div>
+				</div>
+			{% endif %}
+		{% endfor %}				
+	</div>
+</div>
+{% endblock %}
