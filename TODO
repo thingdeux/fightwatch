@@ -1,1 +1,5 @@
 JScript: Event Timer for refresh after 5 minutes.
+
+
+#Check Info table for 'starting_load' - if false then pull
+	#If true throw a 'retrieving channels' message and wait a couple of seconds ... then poll Info table again

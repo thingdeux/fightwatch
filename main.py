@@ -1,26 +1,14 @@
 import cherrypy
-import requests
 import os
 import sys
 from jinja2 import Template, Environment, PackageLoader
+from src.database import createSchema, getStreams
 
 the_current_folder = os.path.dirname(os.path.abspath(__file__))
 env = Environment(loader=PackageLoader('main', 'templates'))
 
 
-class main_site(object):	
-	def getStreams(self, search_phrases):
-		def queryTwitch(query):
-			twitch_url = "https://api.twitch.tv/kraken/search/streams?q="
-			limit = "&limit=4"
-			r = requests.get(twitch_url + str(query) + limit)
-			return r.json()
-
-		json_dict = {}
-		for search_phrase in search_phrases:
-			json_dict[search_phrase] = queryTwitch(search_phrase)
-		
-		return (json_dict)
+class main_site(object):		
 
 	def index(self):			
 		template = env.get_template('index.html')		
@@ -68,8 +56,6 @@ def startServer():
           }
 
 	cherrypy.quickstart(main_site(), config=conf)
-
-
 
 if __name__ == "__main__":
 	argument = sys.argv
