@@ -62,16 +62,7 @@ def getStreams():
 
 if __name__ == "__main__":		
 	#Make sure the DB and table exists.
-	#createSchema()
-	TestInput = [
-		Stream(game='Street Fighter', display_game='Street Fighter IV', url='http://google.com',
-		preview_location='http://google.com/images.jpg', channel_name='EVO 2014 Let Go', viewers='12345' ),
-		Stream(game='Street Fighter', display_game='Street Fighter IV', url='http://google.com',
-		preview_location='http://google.com/images.jpg', channel_name='EVO 2014 Let Go', viewers='12345' ),
-	]
-
-	session = Session()	
-	#multiStreamInsert(TestInput)	
+	createSchema()		
 
 
 #workon your_virtualenv #activate your virtualenv

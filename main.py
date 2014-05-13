@@ -12,8 +12,7 @@ class main_site(object):
 
 	def index(self):			
 		template = env.get_template('index.html')		
-		returned_json = self.getStreams(["Street Fighter", "Ultimate Marvel", "King of Fighter", 
-										"Injustice", "Super Smash", "Mortal Kombat", "Killer Instinct" ])		
+				
 
 		return  template.render(json=returned_json)
 	index.exposed = True

@@ -3,3 +3,21 @@ JScript: Event Timer for refresh after 5 minutes.
 
 #Check Info table for 'starting_load' - if false then pull
 	#If true throw a 'retrieving channels' message and wait a couple of seconds ... then poll Info table again
+
+
+
+{
+'Street Fighter': 
+['Street Fighter X Mega Man', 'Street Fighter II Turbo: Hyper Fighting', 'Street Fighter III: 3rd Strike', "Street Fighter II': Champion Edition", 'Street Fighter Alpha 3', 'Street Fighter Alpha 2', 'Street Fighter EX2 Plus', 'Street Fighter III: Double Impact', 'Street Fighter EX2', 'Street Fighter: The Movie', 'Street Fighter IV', 'Street Fighter II: The World Warrior', 'Street Fighter X Tekken', 'Street Fighter Collection 2', 'Street Fighter EX Plus', 'Street Fighter III: New Generation', 'Street Fighter 2010: The Final Fight', 'Street Fighter EX', "Street Fighter II': Hyper Fighting", 'Street Fighter III: 2nd Impact','Super Street Fighter II Turbo HD Remix', 'Super Street Fighter IV', 'Super Street Fighter II', 'Super Street Fighter II Turbo', 'Super Street Fighter II: The New Challengers', 'Super Street Fighter II: The Tournament Battle', 'Super Street Fighter II: Turbo Revival'], 
+
+'Killer Instinct': ['Killer Instinct', 'Killer Instinct 2', 'Killer Instinct Gold'], 
+'Super Smash': ['Super Smash Bros.', 'Smash TV', 'Super Smash Bros. Brawl', 'Super Smash Bros. Melee'], 
+'King of Fighter': ['King of Fighters R-1', 'King of Fighters R-2'], 
+
+
+'Ultimate Marvel': ['Ultimate Marvel vs. Capcom 3'], 
+
+'Mortal Kombat': ['Mortal Kombat: Armageddon', 'Mortal Kombat II', 'Mortal Kombat', 'Mortal Kombat 3', 'Mortal Kombat: Unchained', 'Mortal Kombat 4', 'Mortal Kombat Mythologies: Sub-Zero', 'Mortal Kombat Arcade Kollection', 'Mortal Kombat & Mortal Kombat II', 'Mortal Kombat: Tournament Edition', 'Mortal Kombat Gold', 'Mortal Kombat Advance', 'Mortal Kombat Trilogy', 'Mortal Kombat vs. DC Universe', 'Mortal Kombat: Deadly Alliance', 'Mortal Kombat: Special Forces', 'Mortal Kombat: Shaolin Monks', 'Mortal Kombat: Deception'], 
+
+'Injustice': ['Injustice: Gods Among Us']}
+
