@@ -23,7 +23,7 @@ class main_site(object):
 			cdn_url = "static"
 		else:
 			cdn_url = "http://cdn-79b.kxcdn.com"
-			
+
 		template = env.get_template('loading.html')
 		return template.render(cdn_environment=cdn_url)
 
@@ -52,45 +52,43 @@ class main_site(object):
 		return ( str(checkLoading()) )
 	checkDB.exposed = True
 	
-
-
-
 def startServer():
 	if server_mode == "dev":
 		cherrypy.config.update({ 'server.socket_host': '0.0.0.0',
 		                       'server.socket_port': 8000,                         
 		                       })
-  	elif server_mode == "production":
-	    cherrypy.config.update({ 
-	                             'environment': 'production',
-	                             'log.screen': False,
-	                             'log.error_file': '/home/thingdeux/webapps/fightwatch/fight.watch/error.log',
-	                             'server.socket_host': '127.0.0.1',
-	                             'server.socket_port': 28921,
-	                             })
 
-	conf = {        
-          '/static': { 'tools.staticdir.on' : True,
-                        'tools.staticdir.dir': os.path.join(the_current_folder, 'static')
-                      },        
-           '/static/css': { 'tools.staticdir.on' : True,
-                            'tools.staticdir.dir': os.path.join(the_current_folder, 'static/css')
-                          },
-           '/static/js': { 'tools.staticdir.on' : True,
-                        'tools.staticdir.dir': os.path.join(the_current_folder, 'static/js')
-                      },           
-            '/static/images': { 'tools.staticdir.on' : True,
-                        'tools.staticdir.dir': os.path.join(the_current_folder, 'static/images'),
-                        'tools.staticdir.content_types': {'jpg': 'image/jpeg'}
-                          },            
-          'favicon.ico': {
-                          'tools.staticfile.on': True,
-                          'tools.staticfile.filename': os.path.join(the_current_folder, "static/favicon.ico")
-                      }
-          }
+		conf = {
+		  '/static': { 'tools.staticdir.on' : True,
+		                'tools.staticdir.dir': os.path.join(the_current_folder, 'static')
+		              },        
+		   '/static/css': { 'tools.staticdir.on' : True,
+		                    'tools.staticdir.dir': os.path.join(the_current_folder, 'static/css')
+		                  },
+		   '/static/js': { 'tools.staticdir.on' : True,
+		                'tools.staticdir.dir': os.path.join(the_current_folder, 'static/js')
+		              },           
+		    '/static/images': { 'tools.staticdir.on' : True,
+		                'tools.staticdir.dir': os.path.join(the_current_folder, 'static/images'),
+		                'tools.staticdir.content_types': {'jpg': 'image/jpeg'}
+		                  },            
+		  'favicon.ico': {
+		                  'tools.staticfile.on': True,
+		                  'tools.staticfile.filename': os.path.join(the_current_folder, "static/favicon.ico")
+		              }
+		  }
 
-	cherrypy.quickstart(main_site(), config=conf)
-
+		cherrypy.quickstart(main_site(), config=conf)
+	elif server_mode == "production":
+		cherrypy.config.update({ 
+		                         'environment': 'production',
+		                         'log.screen': False,
+		                         'log.error_file': '/home/thingdeux/webapps/fightwatch/fight.watch/error.log',
+		                         'server.socket_host': '127.0.0.1',
+		                         'server.socket_port': 28921,
+		                         })
+		cherrypy.quickstart( main_site() )
+	
 if __name__ == "__main__":
 	argument = sys.argv
 	
