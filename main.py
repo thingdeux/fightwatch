@@ -10,15 +10,29 @@ env = Environment(loader=PackageLoader('main', 'templates'))
 
 class main_site(object):
 	def fourohfour(self):
+		if server_mode == "dev":
+			cdn_url = "static"
+		else:
+			cdn_url = "http://cdn-79b.kxcdn.com"
+
 		template = env.get_template('404.html')
-		return template.render()
+		return template.render(cdn_environment=cdn_url)
 
 	def loading(self):
+		if server_mode == "dev":
+			cdn_url = "static"
+		else:
+			cdn_url = "http://cdn-79b.kxcdn.com"
+			
 		template = env.get_template('loading.html')
-		return template.render()
+		return template.render(cdn_environment=cdn_url)
 
 	def index(self):			
 		template = env.get_template('index.html')
+		if server_mode == "dev":
+			cdn_url = "static"
+		else:
+			cdn_url = "http://cdn-79b.kxcdn.com"
 		
 		try:
 			db_info = getStreams()		
@@ -29,8 +43,8 @@ class main_site(object):
 		if db_info == True:
 			#If it returns false send a loading page that auto-refreshes after like 3 seconds.	
 			return self.loading()
-		else: 						
-			return  template.render(streams=db_info[0], updated=db_info[1])
+		else:					
+			return  template.render(streams=db_info[0], updated=db_info[1], cdn_environment=cdn_url)
 				
 	index.exposed = True
 
