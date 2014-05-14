@@ -130,7 +130,5 @@ if __name__ == "__main__":
 #pip install MySQL-python
 
 #/home/thingdeux/.virtualenvs/fight.watch/bin/python2.7    - Exec python2
-
 #/home/thingdeux/.virtualenvs/fight.watch/lib/python2.7/site-packages
-
 #*/5 * * * * /home/thing2/.virtualenvs/fight.watch/bin/python2.7 /home/thing2/Development/Python/fight.watch/src/twitchLoader.py
