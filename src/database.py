@@ -42,7 +42,7 @@ class Info(Base):
 
 def multiStreamInsert(list_of_dicts):	
 	session = Session()
-	deleteAllStreams()
+	deleteAllStreams(session)
 	#Insert multiple values
 	session.add_all(list_of_dicts)
 	#Commit then close session
@@ -79,7 +79,7 @@ def getStreams():
 					 }]
 
 		last_query = session.query(Info).filter(Info.id == 1)
-		last_updated = last_query.first().last_updated.strftime("%I:%M%p PST")		
+		last_updated = last_query.first().last_updated.strftime("%I:%M%p UTC")		
 
 		return ([dict_to_return, last_updated])
 	else:		
@@ -88,8 +88,7 @@ def getStreams():
 		
 	session.close()
 
-def deleteAllStreams():
-	session = Session()
+def deleteAllStreams(session):	
 	for instance in session.query(Stream):
 		session.delete(instance)
 	session.commit()	
@@ -129,3 +128,9 @@ if __name__ == "__main__":
 #easy_install -U distribute #update distribute on your virtualenv
 #pip install MySQL-python #install your package
 #pip install MySQL-python
+
+#/home/thingdeux/.virtualenvs/fight.watch/bin/python2.7    - Exec python2
+
+#/home/thingdeux/.virtualenvs/fight.watch/lib/python2.7/site-packages
+
+#*/5 * * * * /home/thing2/.virtualenvs/fight.watch/bin/python2.7 /home/thing2/Development/Python/fight.watch/src/twitchLoader.py

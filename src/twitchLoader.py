@@ -31,7 +31,7 @@ def loadStreams():
 					)
 	setLoading(True)
 	multiStreamInsert(sending_to_db)
-	setLoading(False)
+	setLoading(False)	
 
 #Polls twitch for different variations of game names ex: Street Fighter II, Street Fighter EX
 #Used to verify that only certain games are being returned.

@@ -1,3 +1,8 @@
+Figure out why the site hard stopped without throwing an Error. Guess is DB
+
+Previews shifted last-updated time didn't change ... why?
+
+
 JScript: Event Timer for refresh after 5 minutes. (Maybe)
 Create Logger/Logs
 Tweak Responsiveness
