@@ -20,19 +20,16 @@
     {% endfor %}
 {% endblock %}
 
-
 {% block body %}
 <div class = "container-fluid">
 	<div class="row">		
 		{%for stream_category in streams %}			
 			<div data-id = "{{stream_category}}" class = "container-fluid category_container">
-
 				<div class = "container-fluid">
 					<div class = "col-md-12 text-center">
 						<h1>{{stream_category}}</h1>
 					</div>
-				</div>				
-																				
+				</div>																								
 				<div class = "container-fluid stream_container center-block">						
 					{{  findPadding(streams[stream_category]|length)  }}
 					{% for stream in streams[stream_category] %}						
