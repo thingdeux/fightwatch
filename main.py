@@ -3,6 +3,7 @@ import os
 import sys
 from jinja2 import Template, Environment, PackageLoader
 from src.database import createSchema, getStreams, checkLoading
+from src.twitchLoader import loadStreams
 
 the_current_folder = os.path.dirname(os.path.abspath(__file__))
 env = Environment(loader=PackageLoader('main', 'templates'))
@@ -29,7 +30,7 @@ class main_site(object):
 			#If it returns false send a loading page that auto-refreshes after like 3 seconds.	
 			return self.loading()
 		else: 						
-			return  template.render(streams=db_info[0])
+			return  template.render(streams=db_info[0], updated=db_info[1])
 				
 	index.exposed = True
 
@@ -88,4 +89,6 @@ if __name__ == "__main__":
 	except:
 		server_mode = "production"	
 
+	#Make sure DB has tables and is active
+	createSchema()	
 	startServer()

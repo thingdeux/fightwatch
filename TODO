@@ -1,9 +1,13 @@
 JScript: Event Timer for refresh after 5 minutes. (Maybe)
+Create Logger/Logs
+Tweak Responsiveness
+Create outline for hover and maybe 'External watch' vs 'Watch here'
 
 
-
-#Completed:
-	#Check Info table for 'starting_load' - if false then pull
-	#If true throw a 'retrieving channels' message and wait a couple of seconds ... then poll Info table again
+Completed:
+	Check to make sure DB and tables exist.
+	Add last updated
+	Check Info table for 'starting_load' - if false then pull
+	If true throw a 'retrieving channels' message and wait a couple of seconds ... then poll Info table again
 
 

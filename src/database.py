@@ -55,8 +55,8 @@ def createSchema():
 def getStreams():	
 	session = Session()	
 
-	if checkLoading() == False:		
-		dict_to_return = {}
+	if checkLoading() == False:				
+		dict_to_return = {}		
 		#Create a dictionary full of lists that have the 
 		for instance in session.query(Stream):
 			try:				
@@ -78,7 +78,10 @@ def getStreams():
 					 'channel_name': instance.channel_name
 					 }]
 
-		return ([dict_to_return])
+		last_query = session.query(Info).filter(Info.id == 1)
+		last_updated = last_query.first().last_updated.strftime("%I:%M%p PST")		
+
+		return ([dict_to_return, last_updated])
 	else:		
 		return True
 
@@ -118,12 +121,8 @@ def checkLoading():
 	result = server_info_query.first()
 	return result.starting_load
 
-
-
-if __name__ == "__main__":	
-	#import cProfile	
-	#cProfile.run('getStreams()')	
-	print checkLoading()
+if __name__ == "__main__":			
+	getStreams()
 
 
 #workon your_virtualenv #activate your virtualenv

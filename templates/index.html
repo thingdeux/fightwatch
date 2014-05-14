@@ -2,13 +2,13 @@
 
 {% macro findPadding(streamLength) -%}
 	{% if streamLength == 1 %}
-		<div class = "col-md-5"></div>
+		<div class = "col-md-5 hidden-sm"></div>
 	{% elif streamLength == 2 %}
-		<div class = "col-md-4"></div>
+		<div class = "col-md-4 hidden-sm"></div>
 	{% elif streamLength == 3 %}
-		<div class = "col-md-3"></div>
+		<div class = "col-md-3 hidden-sm"></div>
 	{% else %}
-		<div class = "col-md-2"></div>
+		<div class = "col-md-2 hidden-sm"></div>
 	{% endif %}	
 
 {%- endmacro %}
@@ -18,34 +18,45 @@
 	{%for stream_category in streams %}
 			<li><a href="#" class = "site_modify_link" data-target="{{stream_category}}">{{stream_category}}</a></li>	
     {% endfor %}
+
 {% endblock %}
 
 {% block body %}
 <div class = "container-fluid">
-	<div class="row">		
-		{%for stream_category in streams %}			
-			<div data-id = "{{stream_category}}" class = "container-fluid category_container">
-				<div class = "container-fluid">
-					<div class = "col-md-12 text-center">
-						<h1>{{stream_category}}</h1>
+	
+	<div class = "container-fluid">
+		<div class="row">
+			<div class="col-xs-12 text-right">
+				Last Updated: {{ updated }} - Streams Update Every 10 Minutes.
+			</div>
+		</div>
+	</div>
+	<div class = "container-fluid">
+		<div class="row">		
+			{%for stream_category in streams %}			
+				<div data-id = "{{stream_category}}" class = "container-fluid category_container">
+					<div class = "container-fluid">
+						<div class = "col-md-12 text-center">
+							<h1>{{stream_category}}</h1>
+						</div>
+					</div>																								
+					<div class = "container-fluid stream_container center-block">						
+						{{ findPadding(streams[stream_category]|length) }}
+						{% for stream in streams[stream_category] %}						
+							<div class = "col-md-sm 6 col-md-2 stream_window">
+								<a href="{{stream.url}}">
+								<img src="{{stream.preview_location}}" class = "img-responsive" alt="Stream Picture"/>						
+								<h3 class = "text-center">{{ stream.display_name }}</h3></a>
+						        <p class = "text-center">{{ stream.channel_name }}</p>
+						        <p class="text-center">Viewers: {{ stream.viewers }}</p>					        
+							</div>																	
+						{% endfor %}
+						{{ findPadding(streams[stream_category]|length) }}
+					
 					</div>
-				</div>																								
-				<div class = "container-fluid stream_container center-block">						
-					{{  findPadding(streams[stream_category]|length)  }}
-					{% for stream in streams[stream_category] %}						
-						<div class = "col-md-2 stream_window">
-							<a href="{{stream.url}}">
-							<img src="{{stream.preview_location}}" class = "img-responsive" alt="Stream Picture"/>						
-							<h3 class = "text-center">{{ stream.display_name }}</h3></a>
-					        <p class = "text-center">{{ stream.channel_name }}</p>
-					        <p class="text-center">Viewers: {{ stream.viewers }}</p>					        
-						</div>																	
-					{% endfor %}
-					{{  findPadding(streams[stream_category]|length)  }}
-				
-				</div>
-			</div>			
-		{% endfor %}				
+				</div>			
+			{% endfor %}				
+		</div>
 	</div>
 </div>
 {% endblock %}

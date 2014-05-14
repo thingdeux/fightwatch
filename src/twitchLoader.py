@@ -3,18 +3,19 @@ import cProfile, pstats
 from database import Stream, multiStreamInsert, setLoading
 
 TWITCH_API_URL = "https://api.twitch.tv/kraken"
-STREAMS_TO_QUERY = ["Street Fighter", "Ultimate Marvel", "King of Fighter", 
-					"Injustice", "Super Smash", "Mortal Kombat", "Killer Instinct"]
-
 GAME_VERIFICATION = []
 STREAM_LIMIT = 4
 
+def loadStreams():
+	STREAMS_TO_QUERY = ["Street Fighter", "Ultimate Marvel", "King of Fighter", 
+					"Injustice", "Super Smash", "Mortal Kombat", "Killer Instinct"]
 
-def loadStreams(search_phrases):
+	search_phrases = STREAMS_TO_QUERY
+
 	def queryTwitch(query):
 		query_url = TWITCH_API_URL + "/search/streams?q="
 		limit = "&limit=" + str(STREAM_LIMIT)
-		r = requests.get(query_url + str(query) + limit)		
+		r = requests.get(query_url + str(query) + limit)				
 		return r.json()
 
 	sending_to_db = []
@@ -53,4 +54,4 @@ if __name__ == "__main__":
 	#p = pstats.Stats('restats')
 	#test = cProfile.run('loadStreams(STREAMS_TO_QUERY)', 'restats')
 	#p.sort_stats('pcalls').print_stats()
-	loadStreams(STREAMS_TO_QUERY)
+	loadStreams()
