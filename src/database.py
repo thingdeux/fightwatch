@@ -80,23 +80,23 @@ def getStreams():
 
 		last_query = session.query(Info).filter(Info.id == 1)
 		last_updated = last_query.first().last_updated.strftime("%I:%M%p UTC")		
+		session.close()
 
 		return ([dict_to_return, last_updated])
 	else:		
+		session.close()
 		return True
-
 		
-	session.close()
-
+#Doesn't close session (Intentional)
 def deleteAllStreams(session):	
 	for instance in session.query(Stream):
 		session.delete(instance)
-	session.commit()	
+	session.commit()
 
 
 def setLoading(setBool):
 	session = Session()
-	#Check to see id(1) exists
+	#Check to see id(1) exists - table should only ever have one row.
 	try:
 		server_info_query = session.query(Info).filter(Info.id == 1)	
 		result = server_info_query.first()
@@ -118,6 +118,7 @@ def checkLoading():
 	session = Session()
 	server_info_query = session.query(Info).filter(Info.id == 1)	
 	result = server_info_query.first()
+	session.close()	
 	return result.starting_load
 
 if __name__ == "__main__":			

@@ -9,30 +9,27 @@ the_current_folder = os.path.dirname(os.path.abspath(__file__))
 env = Environment(loader=PackageLoader('main', 'templates'))
 
 class main_site(object):
-	def fourohfour(self):
+	def getCDN(server_mode):
 		if server_mode == "dev":
 			cdn_url = "static"
 		else:
-			cdn_url = "http://cdn-79b.kxcdn.com"
+			cdn_url = "http://cdn.fight.watch"
+
+	def fourohfour(self):
+		cdn_url = getCDN(server_mode)
 
 		template = env.get_template('404.html')
 		return template.render(cdn_environment=cdn_url)
 
 	def loading(self):
-		if server_mode == "dev":
-			cdn_url = "static"
-		else:
-			cdn_url = "http://cdn-79b.kxcdn.com"
+		cdn_url = getCDN(server_mode)
 
 		template = env.get_template('loading.html')
 		return template.render(cdn_environment=cdn_url)
 
 	def index(self):			
 		template = env.get_template('index.html')
-		if server_mode == "dev":
-			cdn_url = "static"
-		else:
-			cdn_url = "http://cdn-79b.kxcdn.com"
+		cdn_url = getCDN(server_mode)
 		
 		try:
 			db_info = getStreams()		
