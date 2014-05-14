@@ -15,8 +15,8 @@
 
 
 {% block navbar %}
-	{%for stream_category in json %}
-		{% if json[stream_category]['streams']|length > 0 %}
+	{%for stream_category in streams %}
+		{% if streams[stream_category]['streams']|length > 0 %}
 			<li><a href="#" class = "site_modify_link" data-target="{{stream_category}}">{{stream_category}}</a></li> 	
 		{% endif %}
     {% endfor %}

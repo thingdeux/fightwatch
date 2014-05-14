@@ -1,12 +1,14 @@
 import requests
-from database import Stream, multiStreamInsert
+import cProfile, pstats
+from database import Stream, multiStreamInsert, setLoading
 
 TWITCH_API_URL = "https://api.twitch.tv/kraken"
 STREAMS_TO_QUERY = ["Street Fighter", "Ultimate Marvel", "King of Fighter", 
-					"Injustice", "Super Smash", "Mortal Kombat", "Killer Instinct" ]
+					"Injustice", "Super Smash", "Mortal Kombat", "Killer Instinct"]
 
 GAME_VERIFICATION = []
 STREAM_LIMIT = 4
+
 
 def loadStreams(search_phrases):
 	def queryTwitch(query):
@@ -26,19 +28,9 @@ def loadStreams(search_phrases):
 						Stream(game=search_phrase, display_game=stream['game'], url=stream['channel']['url'], 
 							preview_location=stream['preview']['medium'],channel_name=stream['channel']['display_name'], viewers=stream['viewers'])
 					)
+	setLoading(True)
 	multiStreamInsert(sending_to_db)
-					
-
-					
-			
-
-
-			
-
-	
-	#return (json_dict)
-	#Convert into format for inserting DB Stream records.
-	#for game in json_dict
+	setLoading(False)
 
 #Polls twitch for different variations of game names ex: Street Fighter II, Street Fighter EX
 #Used to verify that only certain games are being returned.
@@ -58,11 +50,7 @@ def loadGamesVerification(search_phrases):
 	return (returned_list)
 
 if __name__ == "__main__":	
-	#modified_query = STREAMS_TO_QUERY
-	#Custom Rule because twitch doesn't consider Street Fighter and Super Street Fighter to be equal
-	#modified_query.append("Super Street Fighter")
-	#modified_query.append("The King of Fighters")
-	#modified_query.append("Injustice: Gods Among Us")
-	#modified_query.append("Super Smash Brothers")
-	#GAME_VERIFICATION = loadGamesVerification(modified_query)
+	#p = pstats.Stats('restats')
+	#test = cProfile.run('loadStreams(STREAMS_TO_QUERY)', 'restats')
+	#p.sort_stats('pcalls').print_stats()
 	loadStreams(STREAMS_TO_QUERY)

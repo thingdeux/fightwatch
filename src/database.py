@@ -13,8 +13,8 @@ DB = 'fightwatch'
 
 engine = create_engine("mysql+mysqldb://" + USER + ":" + PASS + "@" + 
 							HOST + ":" + PORT + "/" + DB)
-Session = sessionmaker(bind=engine)
 Base = declarative_base()
+Session = sessionmaker(bind=engine)
 
 class Stream(Base):	
 	__tablename__='streams'
@@ -30,7 +30,7 @@ class Stream(Base):
 		return "<Stream(game='%s', display_game='%s', url='%s', \
 				preview_location='%s', channel_name='%s', viewers='%s')>" % (self.game, 
 				self.display_game, self.url, self.preview_location,	self.channel_name, self.viewers)
-
+	
 class Info(Base):
 	__tablename__ = 'info'
 	id = Column(Integer, primary_key=True)
@@ -41,28 +41,87 @@ class Info(Base):
 		return "<Info(starting_load='%s', last_updated='%s'>" %	(self.starting_load, self.last_updated)	
 
 def multiStreamInsert(list_of_dicts):	
-	session = Session()	
+	session = Session()
+	deleteAllStreams(session)
 	#Insert multiple values
 	session.add_all(list_of_dicts)
-	#Commit session
+	#Commit then close session
 	session.commit()
 	session.close()
-
 
 def createSchema():
 	Base.metadata.create_all(engine)
 
-def getStreams():
-	session = Session()
-	for instance in session.query(Stream).order_by(Stream.game): 
-		print instance.id, instance.game, instance.display_game
+def getStreams(session):		
+	if checkLoading(session) == False:		
+		dict_to_return = {}
+		#Create a dictionary full of lists that have the 
+		for instance in session.query(Stream).order_by(Stream.game):
+			try:				
+				dict_to_return[instance.game].append([
+					{'stream_category': instance.game, 
+					 'display_name': instance.display_game,
+					 'url': instance.url,
+					 'viewers': instance.viewers,
+					 'preview_location': instance.preview_location,
+					 'channel_name': instance.channel_name
+					 }
+					])				
+			except:
+				dict_to_return[instance.game] = [{'stream_category': instance.game, 
+					 'display_name': instance.display_game,
+					 'url': instance.url,
+					 'viewers': instance.viewers,
+					 'preview_location': instance.preview_location,
+					 'channel_name': instance.channel_name
+					 }]			 					
+
+		return (dict_to_return)
+	else:
+		return False
+
 		
 	session.close()
 
+def deleteAllStreams(session):
+	session = Session()
+	for instance in session.query(Stream):
+		session.delete(instance)
+	session.commit()	
 
-if __name__ == "__main__":		
-	#Make sure the DB and table exists.
-	createSchema()		
+
+def setLoading(setBool, session=Session() ):
+	session = Session()
+	#Check to see id(1) exists
+	try:
+		server_info_query = session.query(Info).filter(Info.id == 1)	
+		result = server_info_query.first()
+		result.starting_load = setBool
+		if setBool == False:
+			result.last_updated = datetime.now()
+		session.commit()
+
+	except:	
+		#If it doesn't exist create it with the passed bool		
+		server_info = Info(starting_load=setBool, last_updated=datetime.now())
+		session.add(server_info)
+		session.commit()
+
+	session.close()
+
+#Check info table to see if an insert is currently taking place
+def checkLoading(session):
+	server_info_query = session.query(Info).filter(Info.id == 1)	
+	result = server_info_query.first()	
+	return result.starting_load
+
+def deleteCurrentStreams(session):
+	session = Session()
+
+if __name__ == "__main__":	
+	#import cProfile	
+	#cProfile.run('getStreams()')	
+	print "Yup"
 
 
 #workon your_virtualenv #activate your virtualenv

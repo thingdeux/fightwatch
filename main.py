@@ -12,9 +12,14 @@ class main_site(object):
 
 	def index(self):			
 		template = env.get_template('index.html')		
-				
+		active_streams = getStreams()
 
-		return  template.render(json=returned_json)
+		if streams == False:
+			#If it returns false send a loading page that auto-refreshes after like 3 seconds.	
+			return ("Loading dude sorry")
+		else:
+			return  template.render(streams=active_streams)
+				
 	index.exposed = True
 	
 
