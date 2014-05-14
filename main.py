@@ -7,18 +7,30 @@ from src.database import createSchema, getStreams
 the_current_folder = os.path.dirname(os.path.abspath(__file__))
 env = Environment(loader=PackageLoader('main', 'templates'))
 
+class main_site(object):
+	def fourohfour(self):
+		template = env.get_template('404.html')
+		return template.render()
 
-class main_site(object):		
+	def loading(self):
+		template = env.get_template('loading.html')
+		return template.render()
 
 	def index(self):			
-		template = env.get_template('index.html')		
-		active_streams = getStreams()
+		template = env.get_template('index.html')
+		
+		try:
+			db_info = getStreams()
+			test = db_info[0]
+		except:
+			return self.fourohfour()
 
-		if streams == False:
+		
+		if db_info == False:
 			#If it returns false send a loading page that auto-refreshes after like 3 seconds.	
-			return ("Loading dude sorry")
-		else:
-			return  template.render(streams=active_streams)
+			return self.loading()			
+			
+		return  template.render(streams=active_streams)
 				
 	index.exposed = True
 	

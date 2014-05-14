@@ -16,9 +16,7 @@
 
 {% block navbar %}
 	{%for stream_category in streams %}
-		{% if streams[stream_category]['streams']|length > 0 %}
-			<li><a href="#" class = "site_modify_link" data-target="{{stream_category}}">{{stream_category}}</a></li> 	
-		{% endif %}
+			<li><a href="#" class = "site_modify_link" data-target="{{stream_category}}">{{stream_category}}</a></li>	
     {% endfor %}
 {% endblock %}
 
@@ -26,32 +24,30 @@
 {% block body %}
 <div class = "container-fluid">
 	<div class="row">		
-		{%for stream_category in json %}
-			{% if json[stream_category]['streams']|length > 0 %}
-				<div data-id = "{{stream_category}}" class = "container-fluid category_container">
+		{%for stream_category in streams %}			
+			<div data-id = "{{stream_category}}" class = "container-fluid category_container">
 
-					<div class = "container-fluid">
-						<div class = "col-md-12 text-center">
-							<h1>{{stream_category}}</h1>
-						</div>
+				<div class = "container-fluid">
+					<div class = "col-md-12 text-center">
+						<h1>{{stream_category}}</h1>
 					</div>
-																					
-					<div class = "container-fluid stream_container center-block">						
-						{{  findPadding(json[stream_category]['streams']|length)  }}
-						{%for stream in json[stream_category]['streams']%}					
-							<div class = "col-md-2 stream_window">
-								<a href="{{stream.channel.url}}">
-								<img src="{{stream.preview.medium}}" class = "img-responsive" alt="Stream Picture"/>						
-								<h3 class = "text-center">{{ stream.channel.display_name }}</h3></a>
-						        <p class = "text-center">{{ stream.game }}</p>
-						        <p class="text-center">Viewers: {{ stream.viewers }}</p>					        
-							</div>																	
-						{% endfor %}
-						{{  findPadding(json[stream_category]['streams']|length)  }}
-					
-					</div>
+				</div>				
+																				
+				<div class = "container-fluid stream_container center-block">						
+					{{  findPadding(streams[stream_category]|length)  }}
+					{% for stream in streams[stream_category] %}						
+						<div class = "col-md-2 stream_window">
+							<a href="{{stream.url}}">
+							<img src="{{stream.preview_location}}" class = "img-responsive" alt="Stream Picture"/>						
+							<h3 class = "text-center">{{ stream.display_name }}</h3></a>
+					        <p class = "text-center">{{ stream.channel_name }}</p>
+					        <p class="text-center">Viewers: {{ stream.viewers }}</p>					        
+						</div>																	
+					{% endfor %}
+					{{  findPadding(streams[stream_category]|length)  }}
+				
 				</div>
-			{% endif %}
+			</div>			
 		{% endfor %}				
 	</div>
 </div>

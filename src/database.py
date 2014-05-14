@@ -52,13 +52,13 @@ def multiStreamInsert(list_of_dicts):
 def createSchema():
 	Base.metadata.create_all(engine)
 
-def getStreams(session):		
+def getStreams(session=Session()):		
 	if checkLoading(session) == False:		
 		dict_to_return = {}
 		#Create a dictionary full of lists that have the 
-		for instance in session.query(Stream).order_by(Stream.game):
+		for instance in session.query(Stream):
 			try:				
-				dict_to_return[instance.game].append([
+				dict_to_return[instance.game].append(
 					{'stream_category': instance.game, 
 					 'display_name': instance.display_game,
 					 'url': instance.url,
@@ -66,7 +66,7 @@ def getStreams(session):
 					 'preview_location': instance.preview_location,
 					 'channel_name': instance.channel_name
 					 }
-					])				
+					)				
 			except:
 				dict_to_return[instance.game] = [{'stream_category': instance.game, 
 					 'display_name': instance.display_game,
@@ -74,16 +74,16 @@ def getStreams(session):
 					 'viewers': instance.viewers,
 					 'preview_location': instance.preview_location,
 					 'channel_name': instance.channel_name
-					 }]			 					
+					 }]
 
-		return (dict_to_return)
+		return ([dict_to_return])
 	else:
 		return False
 
 		
 	session.close()
 
-def deleteAllStreams(session):
+def deleteAllStreams(session = Session()):
 	session = Session()
 	for instance in session.query(Stream):
 		session.delete(instance)
@@ -110,18 +110,18 @@ def setLoading(setBool, session=Session() ):
 	session.close()
 
 #Check info table to see if an insert is currently taking place
-def checkLoading(session):
+def checkLoading(session = Session()):
 	server_info_query = session.query(Info).filter(Info.id == 1)	
-	result = server_info_query.first()	
+	result = server_info_query.first()
 	return result.starting_load
 
-def deleteCurrentStreams(session):
+def deleteCurrentStreams(session=Session()):
 	session = Session()
 
 if __name__ == "__main__":	
 	#import cProfile	
 	#cProfile.run('getStreams()')	
-	print "Yup"
+	print checkLoading()
 
 
 #workon your_virtualenv #activate your virtualenv
