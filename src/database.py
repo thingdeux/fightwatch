@@ -42,7 +42,7 @@ class Info(Base):
 
 def multiStreamInsert(list_of_dicts):	
 	session = Session()
-	deleteAllStreams(session)
+	deleteAllStreams()
 	#Insert multiple values
 	session.add_all(list_of_dicts)
 	#Commit then close session
@@ -52,8 +52,10 @@ def multiStreamInsert(list_of_dicts):
 def createSchema():
 	Base.metadata.create_all(engine)
 
-def getStreams(session=Session()):		
-	if checkLoading(session) == False:		
+def getStreams():	
+	session = Session()	
+
+	if checkLoading() == False:		
 		dict_to_return = {}
 		#Create a dictionary full of lists that have the 
 		for instance in session.query(Stream):
@@ -77,20 +79,20 @@ def getStreams(session=Session()):
 					 }]
 
 		return ([dict_to_return])
-	else:
-		return False
+	else:		
+		return True
 
 		
 	session.close()
 
-def deleteAllStreams(session = Session()):
+def deleteAllStreams():
 	session = Session()
 	for instance in session.query(Stream):
 		session.delete(instance)
 	session.commit()	
 
 
-def setLoading(setBool, session=Session() ):
+def setLoading(setBool):
 	session = Session()
 	#Check to see id(1) exists
 	try:
@@ -110,13 +112,13 @@ def setLoading(setBool, session=Session() ):
 	session.close()
 
 #Check info table to see if an insert is currently taking place
-def checkLoading(session = Session()):
+def checkLoading():
+	session = Session()
 	server_info_query = session.query(Info).filter(Info.id == 1)	
 	result = server_info_query.first()
 	return result.starting_load
 
-def deleteCurrentStreams(session=Session()):
-	session = Session()
+
 
 if __name__ == "__main__":	
 	#import cProfile	

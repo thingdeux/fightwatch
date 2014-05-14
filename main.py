@@ -2,7 +2,7 @@ import cherrypy
 import os
 import sys
 from jinja2 import Template, Environment, PackageLoader
-from src.database import createSchema, getStreams
+from src.database import createSchema, getStreams, checkLoading
 
 the_current_folder = os.path.dirname(os.path.abspath(__file__))
 env = Environment(loader=PackageLoader('main', 'templates'))
@@ -20,19 +20,22 @@ class main_site(object):
 		template = env.get_template('index.html')
 		
 		try:
-			db_info = getStreams()
-			test = db_info[0]
-		except:
+			db_info = getStreams()		
+		except:			
 			return self.fourohfour()
 
 		
-		if db_info == False:
+		if db_info == True:
 			#If it returns false send a loading page that auto-refreshes after like 3 seconds.	
-			return self.loading()			
-			
-		return  template.render(streams=active_streams)
+			return self.loading()
+		else: 						
+			return  template.render(streams=db_info[0])
 				
 	index.exposed = True
+
+	def checkDB(self):
+		return ( str(checkLoading()) )
+	checkDB.exposed = True
 	
 
 
