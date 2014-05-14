@@ -1,8 +1,5 @@
 Figure out why the site hard stopped without throwing an Error. Guess is DB
-#Use CDN on prod and local in dev
-
 Previews shifted last-updated time didn't change ... why?
-
 JScript: Event Timer for refresh after 5 minutes. (Maybe)
 Create Logger/Logs
 Tweak Responsiveness
@@ -11,6 +8,7 @@ Create outline for hover and maybe 'External watch' vs 'Watch here'
 Test Insert id=1 on info checker
 
 Completed:
+	Use CDN on prod and local in dev
 	Check to make sure DB and tables exist.
 	Add last updated
 	Check Info table for 'starting_load' - if false then pull

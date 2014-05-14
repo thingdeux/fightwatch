@@ -4,44 +4,50 @@ import sys
 from jinja2 import Template, Environment, PackageLoader
 from src.database import createSchema, getStreams, checkLoading
 from src.twitchLoader import loadStreams
+from datetime import datetime
 
 the_current_folder = os.path.dirname(os.path.abspath(__file__))
 env = Environment(loader=PackageLoader('main', 'templates'))
 
 class main_site(object):
-	def getCDN(server_mode):
+	def getCDN(self, server_mode):
 		if server_mode == "dev":
-			cdn_url = "static"
+			return("static")
 		else:
-			cdn_url = "http://cdn.fight.watch"
+			return ("http://cdn.fight.watch")
 
-	def fourohfour(self):
-		cdn_url = getCDN(server_mode)
-
+	def default(self):		
 		template = env.get_template('404.html')
-		return template.render(cdn_environment=cdn_url)
+		cherrypy.response.status = 404	
+		return template.render(cdn_environment=self.getCDN(server_mode) )
+	default.exposed = True
 
-	def loading(self):
-		cdn_url = getCDN(server_mode)
-
+	def loading(self):		
 		template = env.get_template('loading.html')
-		return template.render(cdn_environment=cdn_url)
+		return template.render(cdn_environment=self.getCDN(server_mode) )
 
 	def index(self):			
-		template = env.get_template('index.html')
-		cdn_url = getCDN(server_mode)
+		template = env.get_template('index.html')		
 		
 		try:
-			db_info = getStreams()		
-		except:			
-			return self.fourohfour()
+			cherrypy.log("Checking DB: " + str(datetime.now()) )
+			db_info = getStreams()
+			cherrypy.log("Completed DB: " + str(datetime.now()) )
+		except Exception, err:			
+			for error in err:
+				cherrypy.log("Problem querying: " + str(err) )				
+			return self.default()
 
 		
 		if db_info == True:
-			#If it returns false send a loading page that auto-refreshes after like 3 seconds.	
+			#If it returns false send a loading page that auto-refreshes after 3 seconds.	
 			return self.loading()
-		else:					
-			return  template.render(streams=db_info[0], updated=db_info[1], cdn_environment=cdn_url)
+		else:
+			try:				
+				return  template.render(streams=db_info[0], updated=db_info[1], cdn_environment=self.getCDN(server_mode) )
+			except Exception, err: 
+				for error in err:
+					cherrypy.log("Problem building template: " + str(err) )
 				
 	index.exposed = True
 
