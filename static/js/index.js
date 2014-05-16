@@ -1,8 +1,9 @@
 $(document).ready(function(){
-	var category_containers = $('.category_container');
+	var category_containers = $('.category_container');	
+	var nav_links = $('.site_modify_link');
 
 	//When a navbar link is clicked hide all other stream containers
-	$('.site_modify_link').click(function(event) {
+	nav_links.click(function(event) {
 		event.preventDefault();
 		var toHide = $(this).attr('data-target');
 
@@ -24,6 +25,5 @@ $(document).ready(function(){
 		}
 	});
 
-	
 
 });

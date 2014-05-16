@@ -1,3 +1,5 @@
+# -*- coding: utf-8 -*-
+
 import cherrypy
 import os
 import sys
@@ -9,35 +11,34 @@ from datetime import datetime
 the_current_folder = os.path.dirname(os.path.abspath(__file__))
 env = Environment(loader=PackageLoader('main', 'templates'))
 
-class main_site(object):
+#Main Site definitions/mappings
+class main_site(object):	
 	def getCDN(self, server_mode):
 		if server_mode == "dev":
 			return("static")
 		else:
 			return ("http://cdn.fight.watch")
 
-	def default(self):		
+	def default(self, *args):		
 		template = env.get_template('404.html')
 		cherrypy.response.status = 404	
 		return template.render(cdn_environment=self.getCDN(server_mode) )
-	default.exposed = True
-
+	
 	def loading(self):		
 		template = env.get_template('loading.html')
 		return template.render(cdn_environment=self.getCDN(server_mode) )
 
 	def index(self):			
-		template = env.get_template('index.html')		
-		
+		template = env.get_template('index.html')
+				
 		try:
-			cherrypy.log("Checking DB: " + str(datetime.now()) )
+			#cherrypy.log("Checking DB: " + str(datetime.now()) )
 			db_info = getStreams()
-			cherrypy.log("Completed DB: " + str(datetime.now()) )
+			#cherrypy.log("Completed DB: " + str(datetime.now()) )
 		except Exception, err:			
 			for error in err:
 				cherrypy.log("Problem querying: " + str(err) )				
 			return self.default()
-
 		
 		if db_info == True:
 			#If it returns false send a loading page that auto-refreshes after 3 seconds.	
@@ -47,20 +48,33 @@ class main_site(object):
 				return  template.render(streams=db_info[0], updated=db_info[1], cdn_environment=self.getCDN(server_mode) )
 			except Exception, err: 
 				for error in err:
-					cherrypy.log("Problem building template: " + str(err) )
-				
-	index.exposed = True
+					cherrypy.log("Problem building template: " + str(err) )				
+	index.exposed = True	
+
+	def thanks(self):
+		template = env.get_template('thanks.html')
+		return template.render(cdn_environment=self.getCDN(server_mode) )		
+	thanks.exposed = True
 
 	def checkDB(self):
 		return ( str(checkLoading()) )
 	checkDB.exposed = True
-	
+
+
+#Error page definitions /mappings
+def error_page_404(status, message, traceback, version):
+	template = env.get_template('404.html')
+	cherrypy.response.status = 404	
+	return template.render(cdn_environment="http://cdn.fight.watch" )
+
+cherrypy.config.update ({'error_page.404':  error_page_404 })
+
+
 def startServer():
 	if server_mode == "dev":
 		cherrypy.config.update({ 'server.socket_host': '0.0.0.0',
 		                       'server.socket_port': 8000,                         
-		                       })
-
+		                       })				
 		conf = {
 		  '/static': { 'tools.staticdir.on' : True,
 		                'tools.staticdir.dir': os.path.join(the_current_folder, 'static')
@@ -105,5 +119,5 @@ if __name__ == "__main__":
 		server_mode = "production"	
 
 	#Make sure DB has tables and is active
-	createSchema()	
+	createSchema()
 	startServer()

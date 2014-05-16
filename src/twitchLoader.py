@@ -1,3 +1,5 @@
+# -*- coding: utf-8 -*-
+
 import requests
 import cProfile, pstats
 from database import Stream, multiStreamInsert, setLoading
@@ -15,7 +17,7 @@ def loadStreams():
 	def queryTwitch(query):
 		query_url = TWITCH_API_URL + "/search/streams?q="
 		limit = "&limit=" + str(STREAM_LIMIT)
-		r = requests.get(query_url + str(query) + limit)				
+		r = requests.get(query_url + str(query) + limit)			
 		return r.json()
 
 	sending_to_db = []
@@ -24,10 +26,18 @@ def loadStreams():
 			for a_game in STREAMS_TO_QUERY:				
 				if a_game.lower() in str(stream['game']).lower():
 					#Can be inserted into the DB because they match the query (sometimes weird twitch streams are returned)
-					#Filtering them out					
+					#Filtering them out
+					try:
+						trimmed_status = str(stream['channel']['status'])
+						if len(trimmed_status) < 1:
+							trimmed_status = str(stream['channel']['display_name'])	
+					except:
+						trimmed_status = ""
+
 					sending_to_db.append(
 						Stream(game=search_phrase, display_game=stream['game'], url=stream['channel']['url'], 
-							preview_location=stream['preview']['medium'],channel_name=stream['channel']['display_name'], viewers=stream['viewers'])
+							preview_location=stream['preview']['medium'],channel_name=stream['channel']['display_name'], 
+							viewers=stream['viewers'], status=trimmed_status)
 					)
 	setLoading(True)
 	multiStreamInsert(sending_to_db)

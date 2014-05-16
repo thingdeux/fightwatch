@@ -1,3 +1,5 @@
+# -*- coding: utf-8 -*-
+
 import MySQLdb
 from sqlalchemy import create_engine, Table, Column, Integer, String, MetaData, ForeignKey, Boolean, DateTime, insert, func
 from sqlalchemy.ext.declarative import declarative_base
@@ -25,17 +27,21 @@ class Stream(Base):
 	preview_location = Column(String(256), nullable=False)
 	channel_name = Column(String(256), nullable=False)
 	viewers = Column(String(256), nullable=False)
+	status = Column(String(256), nullable=False)
 
 	def __repr__(self):
 		return "<Stream(game='%s', display_game='%s', url='%s', \
-				preview_location='%s', channel_name='%s', viewers='%s')>" % (self.game, 
-				self.display_game, self.url, self.preview_location,	self.channel_name, self.viewers)
+				preview_location='%s', channel_name='%s', viewers='%s, status ='%s')>" % (self.game, 
+				self.display_game, self.url, self.preview_location,	self.channel_name, self.viewers,
+				self.status)
 	
 class Info(Base):
 	__tablename__ = 'info'
 	id = Column(Integer, primary_key=True)
 	starting_load = Column(Boolean, nullable=False)
 	last_updated = Column(DateTime, nullable=False)
+	donation_total = Column(Integer)
+	maintenance_mode = Column(Boolean)
 
 	def __repr__(self):
 		return "<Info(starting_load='%s', last_updated='%s'>" %	(self.starting_load, self.last_updated)	
@@ -66,7 +72,8 @@ def getStreams():
 					 'url': instance.url,
 					 'viewers': instance.viewers,
 					 'preview_location': instance.preview_location,
-					 'channel_name': instance.channel_name
+					 'channel_name': instance.channel_name,
+					 'status': instance.status
 					 }
 					)				
 			except:
@@ -75,7 +82,8 @@ def getStreams():
 					 'url': instance.url,
 					 'viewers': instance.viewers,
 					 'preview_location': instance.preview_location,
-					 'channel_name': instance.channel_name
+					 'channel_name': instance.channel_name,
+					 'status': instance.status
 					 }]
 
 		last_query = session.query(Info).filter(Info.id == 1)
@@ -123,13 +131,3 @@ def checkLoading():
 
 if __name__ == "__main__":			
 	getStreams()
-
-
-#workon your_virtualenv #activate your virtualenv
-#easy_install -U distribute #update distribute on your virtualenv
-#pip install MySQL-python #install your package
-#pip install MySQL-python
-
-#/home/thingdeux/.virtualenvs/fight.watch/bin/python2.7    - Exec python2
-#/home/thingdeux/.virtualenvs/fight.watch/lib/python2.7/site-packages
-#*/5 * * * * /home/thing2/.virtualenvs/fight.watch/bin/python2.7 /home/thing2/Development/Python/fight.watch/src/twitchLoader.py
