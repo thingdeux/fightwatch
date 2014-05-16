@@ -64,12 +64,16 @@
 						{% for stream in streams[stream_category] %}						
 							<div class = "col-xs-6 col-sm-5 col-md-2 stream_window thumbnail" data-status="">
 								<div class = "caption">
-									<a href="{{stream.url}}">								
+									<a href="{{stream.url}}" target="{{stream.channel_name}}">								
 									<img src="{{stream.preview_location}}" class = "img-responsive stream_preview" alt="Stream Picture"/>							
 									</a>
-									<em><h5 class="text-center">{{stream.status}}</h5></em>
+									
+									<em><h5 class="text-center">{{stream.status[:33].lower() }}
+									{% if stream.status | length > 33 %}
+									 ...
+									{% endif %}</h5></em>
 							        <b><p class = "text-center">{{ stream.channel_name }}</p></b>
-							        <p class="text-center">Viewers: {{ stream.viewers }}</p>						        							        
+							        <p class="text-center">Viewers: {{ stream.viewers }}</p>						     
 							    </div>
 							</div>																	
 						{% endfor %}

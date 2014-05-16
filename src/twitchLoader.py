@@ -9,6 +9,7 @@ GAME_VERIFICATION = []
 STREAM_LIMIT = 4
 
 def loadStreams():
+	#List of games to pass the queryTwitch function.	
 	STREAMS_TO_QUERY = ["Street Fighter", "Ultimate Marvel", "King of Fighter", 
 					"Injustice", "Super Smash", "Mortal Kombat", "Killer Instinct"]
 
@@ -17,12 +18,21 @@ def loadStreams():
 	def queryTwitch(query):
 		query_url = TWITCH_API_URL + "/search/streams?q="
 		limit = "&limit=" + str(STREAM_LIMIT)
-		r = requests.get(query_url + str(query) + limit)			
-		return r.json()
+		try:
+			r = requests.get(query_url + str(query) + limit)							
+			return r.json()
+		except:
+			return ( False )
 
 	sending_to_db = []
-	for search_phrase in search_phrases:		
-		for stream in queryTwitch(search_phrase)['streams']:			
+	streamLoads = 0
+	for search_phrase in search_phrases:
+		try:
+			results = queryTwitch(search_phrase)['streams']		
+		except:
+			results = ""
+		
+		for stream in results:		
 			for a_game in STREAMS_TO_QUERY:				
 				if a_game.lower() in str(stream['game']).lower():
 					#Can be inserted into the DB because they match the query (sometimes weird twitch streams are returned)
@@ -32,16 +42,25 @@ def loadStreams():
 						if len(trimmed_status) < 1:
 							trimmed_status = str(stream['channel']['display_name'])	
 					except:
-						trimmed_status = ""
+						trimmed_status = " - "
 
 					sending_to_db.append(
 						Stream(game=search_phrase, display_game=stream['game'], url=stream['channel']['url'], 
 							preview_location=stream['preview']['medium'],channel_name=stream['channel']['display_name'], 
 							viewers=stream['viewers'], status=trimmed_status)
 					)
-	setLoading(True)
-	multiStreamInsert(sending_to_db)
-	setLoading(False)	
+					streamLoads = streamLoads + 1
+
+	#Verify at least one stream exists
+	
+	setLoading(True)	
+	if streamLoads >= 1:
+		multiStreamInsert(sending_to_db)
+	else:
+		#No streams exist so call multistream insert with no content to force delete.
+		multiStreamInsert(False)
+
+	setLoading(False)
 
 #Polls twitch for different variations of game names ex: Street Fighter II, Street Fighter EX
 #Used to verify that only certain games are being returned.
@@ -60,8 +79,5 @@ def loadGamesVerification(search_phrases):
 
 	return (returned_list)
 
-if __name__ == "__main__":	
-	#p = pstats.Stats('restats')
-	#test = cProfile.run('loadStreams(STREAMS_TO_QUERY)', 'restats')
-	#p.sort_stats('pcalls').print_stats()
+if __name__ == "__main__":		
 	loadStreams()

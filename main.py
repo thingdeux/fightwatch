@@ -31,10 +31,8 @@ class main_site(object):
 	def index(self):			
 		template = env.get_template('index.html')
 				
-		try:
-			#cherrypy.log("Checking DB: " + str(datetime.now()) )
-			db_info = getStreams()
-			#cherrypy.log("Completed DB: " + str(datetime.now()) )
+		try:			
+			db_info = getStreams()			
 		except Exception, err:			
 			for error in err:
 				cherrypy.log("Problem querying: " + str(err) )				

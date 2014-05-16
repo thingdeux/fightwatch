@@ -49,8 +49,11 @@ class Info(Base):
 def multiStreamInsert(list_of_dicts):	
 	session = Session()
 	deleteAllStreams(session)
+	
 	#Insert multiple values
-	session.add_all(list_of_dicts)
+	if list_of_dicts:
+		session.add_all(list_of_dicts)	
+
 	#Commit then close session
 	session.commit()
 	session.close()
