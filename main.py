@@ -6,7 +6,6 @@ import sys
 from jinja2 import Template, Environment, PackageLoader
 from src.database import createSchema, getStreams, checkLoading
 from src.twitchLoader import loadStreams
-from datetime import datetime
 
 the_current_folder = os.path.dirname(os.path.abspath(__file__))
 env = Environment(loader=PackageLoader('main', 'templates'))

@@ -90,10 +90,11 @@ def getStreams():
 					 }]
 
 		last_query = session.query(Info).filter(Info.id == 1)
-		last_updated = last_query.first().last_updated.strftime("%I:%M%p UTC")		
+		last_updated = last_query.first().last_updated
+		diff = datetime.now() - last_updated		
 		session.close()
 
-		return ([dict_to_return, last_updated])
+		return ([dict_to_return, diff.seconds/60])
 	else:		
 		session.close()
 		return True
