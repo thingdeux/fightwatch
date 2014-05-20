@@ -1,5 +1,4 @@
 # -*- coding: utf-8 -*-
-
 import requests
 import cProfile, pstats
 from database import Stream, multiStreamInsert, setLoading
@@ -33,8 +32,8 @@ def loadStreams():
 			results = ""
 		
 		for stream in results:		
-			for a_game in STREAMS_TO_QUERY:				
-				if a_game.lower() in str(stream['game']).lower():
+			for a_game in STREAMS_TO_QUERY:					
+				if a_game.lower() in stream['game'].encode("UTF-8").lower():
 					#Can be inserted into the DB because they match the query (sometimes weird twitch streams are returned)
 					#Filtering them out
 					try:
