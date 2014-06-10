@@ -32,23 +32,26 @@ def loadStreams():
 			results = ""
 		
 		for stream in results:		
-			for a_game in STREAMS_TO_QUERY:					
-				if a_game.lower() in stream['game'].encode("UTF-8").lower():
-					#Can be inserted into the DB because they match the query (sometimes weird twitch streams are returned)
-					#Filtering them out
-					try:
-						trimmed_status = str(stream['channel']['status'])
-						if len(trimmed_status) < 1:
-							trimmed_status = str(stream['channel']['display_name'])	
-					except:
-						trimmed_status = " - "
+			for a_game in STREAMS_TO_QUERY:	
+				try:				
+					if a_game.lower() in stream['game'].encode("UTF-8").lower():
+						#Can be inserted into the DB because they match the query (sometimes weird twitch streams are returned)
+						#Filtering them out
+						try:
+							trimmed_status = str(stream['channel']['status'])
+							if len(trimmed_status) < 1:
+								trimmed_status = str(stream['channel']['display_name'])	
+						except:
+							trimmed_status = " - "
 
-					sending_to_db.append(
-						Stream(game=search_phrase, display_game=stream['game'], url=stream['channel']['url'], 
-							preview_location=stream['preview']['medium'],channel_name=stream['channel']['display_name'], 
-							viewers=stream['viewers'], status=trimmed_status)
-					)
-					streamLoads = streamLoads + 1
+						sending_to_db.append(
+							Stream(game=search_phrase, display_game=stream['game'], url=stream['channel']['url'], 
+								preview_location=stream['preview']['medium'],channel_name=stream['channel']['display_name'], 
+								viewers=stream['viewers'], status=trimmed_status)
+						)
+						streamLoads = streamLoads + 1
+				except:
+					pass
 
 	#Verify at least one stream exists
 	
