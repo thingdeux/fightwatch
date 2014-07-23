@@ -1,6 +1,5 @@
 # -*- coding: utf-8 -*-
 import requests
-import cProfile, pstats
 from database import Stream, multiStreamInsert, setLoading
 
 TWITCH_API_URL = "https://api.twitch.tv/kraken"
@@ -53,8 +52,7 @@ def loadStreams():
 				except:
 					pass
 
-	#Verify at least one stream exists
-	
+	#Verify at least one stream exists	
 	setLoading(True)	
 	if streamLoads >= 1:
 		multiStreamInsert(sending_to_db)

@@ -4,16 +4,13 @@ from sqlalchemy import create_engine, Table, Column, Integer, String, MetaData, 
 from sqlalchemy.ext.declarative import declarative_base
 from sqlalchemy.orm import sessionmaker
 from datetime import datetime
+from json import load
+from os import path
+from cred import getDB
 
-#HOST = 'web368.webfaction.com'
-HOST = "127.0.0.1"
-USER = 'fightwatch'
-PASS = 'Thepassforthisdatabaseis_J0e_mysql12'
-PORT = '3306'
-DB = 'fightwatch'
-
-engine = create_engine("mysql+mysqldb://" + USER + ":" + PASS + "@" + 
-							HOST + ":" + PORT + "/" + DB)
+#Cred.py is not stored in the repo, it returns a string that has the mysql server info:
+#Ex: "mysql+mysqldb://" + USER + ":" + PASS + "@" + HOST + ":" + PORT + "/" + DB
+engine = create_engine( getDB('prod') )
 Base = declarative_base()
 Session = sessionmaker(bind=engine)
 
@@ -49,7 +46,7 @@ def multiStreamInsert(list_of_dicts):
 	session = Session()
 	deleteAllStreams(session)
 	
-	#Insert multiple values
+	#Insert multiple streams into the DB
 	if list_of_dicts:
 		session.add_all(list_of_dicts)	
 
@@ -58,16 +55,17 @@ def multiStreamInsert(list_of_dicts):
 	session.close()
 
 def createSchema():
+    #If DB schema doesn't exist, create it.
 	Base.metadata.create_all(engine)
 
-def getStreams():	
+def getStreams():
 	session = Session()	
 
 	if checkLoading() == False:				
 		dict_to_return = {}		
-		#Create a dictionary full of lists that have the 
+		#Create a list full of dictionaries that have the twitch channel info.
 		for instance in session.query(Stream):
-			try:				
+			try:                			
 				dict_to_return[instance.game].append(
 					{'stream_category': instance.game, 
 					 'display_name': instance.display_game,
@@ -79,6 +77,7 @@ def getStreams():
 					 }
 					)				
 			except:
+                #If the list of dictionaries doesn't exist yet, create it.
 				dict_to_return[instance.game] = [{'stream_category': instance.game, 
 					 'display_name': instance.display_game,
 					 'url': instance.url,
@@ -103,7 +102,6 @@ def deleteAllStreams(session):
 	for instance in session.query(Stream):
 		session.delete(instance)
 	session.commit()
-
 
 def setLoading(setBool):
 	session = Session()
