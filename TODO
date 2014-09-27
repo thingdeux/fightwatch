@@ -1,6 +1,5 @@
 Test Insert id=1 on info checker
 Error checking / soft recovery for everything:
-	*Twitch API returning nothing - (Covered)
 	*DB not working
 	*No results after DB query
 	*Malformed json responce from twitch api
@@ -9,6 +8,23 @@ Error checking / soft recovery for everything:
 Low:
 Write Unit Tests
 JScript: Event Timer for refresh after 10 minutes. (Maybe) - 'Catch DB Refresh?'
+
+
+
+---ElasticSearch
+	Figure out how to push the mapping during index creation programmatically
+	write quick front-end to interact with this data.
+	Finish importing NLBC data
+	Import Any data from Majors
+	Setup MongoDB (or Redis) DB
+	Setup ElasticSearch instances on RemoteBox
+	Configure subdomain for interaction w/ ES
+
+
+
+
+
+
 
 
 

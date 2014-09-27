@@ -70,4 +70,22 @@ def initial_elastic_load():
             print "Load Error"
             print err
 
-initial_elastic_load()
+"""
+This needs to be added to the mapping configuration file
+For ElasticSearch
+.../config/mappings/_default
+
+{
+    "matches": {
+        "properties": {
+            "opponent": {
+                "type": "multi_field",
+                "fields": {
+                    "opponent": {"type": "string", "index": "analyzed"},
+                    "raw_opponent": {"type": "string", "index": "not_analyzed"}
+                }
+            }
+        }
+    }
+}
+"""
