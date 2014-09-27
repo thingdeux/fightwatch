@@ -19,7 +19,7 @@ class Player:
     def __init__(self, player_data):
         try:
             self.id = player_data['id']
-            self.name = player_data['name']
+            self.name = player_data['name'].lower()
             self.matches = []
             self.opponent_history = {}
             self.final_rank = player_data['final-rank']
@@ -30,9 +30,12 @@ class Player:
     # Add the results of a match
     def add_match(self, opponent, outcome, tournament):
         try:
-            self.matches.append([opponent,
-                                outcome,
-                                tournament])
+            self.matches.append({
+                                "name": self.name,
+                                "opponent": opponent,
+                                "outcome": outcome,
+                                "tournament": tournament
+                                })
         except Exception as err:
             print err
 
@@ -52,12 +55,46 @@ def process_tournament_matches(subdomain, tournament_url):
     # Retrieve a tournament by its id (or its url)
     tournament = challonge.tournaments.show(tournament_url_or_id)
     tournament_name = tournament['name']
-    # tournament_date = tournament['start-at']
+    tournament_date = tournament['started-at'].strftime("%Y-%m-%d")
     # Retrieve participant information for the tournament
     participants = challonge.participants.index(tournament_url_or_id)
     # Retrieve match information for the tournament
     matches = challonge.matches.index(tournament_url_or_id)
     players = {}
+
+    # Clean up the class data and make it serializable
+    def clean_data(players):
+        final_data = {}
+        if subdomain is not False:
+            final_data['INDEX'] = subdomain
+        else:
+            final_data['INDEX'] = "FGC"
+        final_data['DOC_TYPE'] = "tournament"
+        final_data['DATA'] = []
+
+        """
+        Iterate over the passed player data and create
+        Dictionaries that will be used to populate ElasticSearch
+        """
+        for key, value in players.iteritems():
+            player = players[key]
+            final_data['DATA'].append(
+                {
+                    "index": final_data['INDEX'],
+                    "doc_type": "matches",
+                    "matches": player.matches,
+                    "body": {
+                        "name": player.name,
+                        "tournament": tournament_name,
+                        "date": tournament_date,
+                        "set_history": player.opponent_history,
+                        "placed": int(player.final_rank)
+                    },
+                    "sets": player.opponent_history
+                }
+            )
+
+        return final_data
 
     # Build list of participants for tournament
     for participant in participants:
@@ -81,4 +118,4 @@ def process_tournament_matches(subdomain, tournament_url):
         winner.track_sets(loser.name, int(match_score[0]), int(match_score[1]))
         loser.track_sets(winner.name, int(match_score[1]), int(match_score[0]))
 
-process_tournament_matches('nextlevel', 'nlbc82usf4')
+    return clean_data(players)
