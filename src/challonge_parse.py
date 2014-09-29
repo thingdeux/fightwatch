@@ -22,7 +22,12 @@ class Player:
             self.name = player_data['name'].lower()
             self.matches = []
             self.opponent_history = {}
-            self.final_rank = player_data['final-rank']
+            try:
+                self.final_rank = int(player_data['final-rank'])
+            except:
+                # Catch Unfinished brackets where there is no "final" rank
+                self.final_rank = 0
+
         except Exception as err:
             print err
             return None
@@ -88,7 +93,7 @@ def process_tournament_matches(subdomain, tournament_url):
                         "tournament": tournament_name,
                         "date": tournament_date,
                         "set_history": player.opponent_history,
-                        "placed": int(player.final_rank)
+                        "placed": player.final_rank
                     },
                     "sets": player.opponent_history
                 }
@@ -105,17 +110,27 @@ def process_tournament_matches(subdomain, tournament_url):
 
     # Iterate over each match and update player class
     for match in matches:
-        winner = players[match['winner-id']]
-        loser = players[match['loser-id']]
-        winner.add_match(loser.name, "WIN", tournament_name)
-        loser.add_match(winner.name, "LOSS", tournament_name)
+        try:
+            winner = players[match['winner-id']]
+            loser = players[match['loser-id']]
+            winner.add_match(loser.name, "WIN", tournament_name)
+            loser.add_match(winner.name, "LOSS", tournament_name)
 
-        """
-        Match sets are provided as wins-losses
-        split them into a list with just the ints
-        """
-        match_score = match['scores-csv'].split('-')
-        winner.track_sets(loser.name, int(match_score[0]), int(match_score[1]))
-        loser.track_sets(winner.name, int(match_score[1]), int(match_score[0]))
+            """
+            Match sets are provided as wins-losses
+            split them into a list with just the ints
+            """
+            try:
+                match_score = match['scores-csv'].split('-')
+            except:
+                match_score = [0, 0]
+            winner.track_sets(loser.name, int(match_score[0]),
+                              int(match_score[1]))
+            loser.track_sets(winner.name, int(match_score[1]),
+                             int(match_score[0]))
+        except Exception as err:
+            # If someone forgets to update the brackets and finish the event
+            # You end up with no winners/losers in some slots
+            pass
 
     return clean_data(players)

@@ -58,9 +58,59 @@ def initial_elastic_load():
         ('levelup', 'wnfae2014_1_5_ae'),
         ('levelup', 'wnfae2014_1_4_ae'),
         ('levelup', 'wnfae2014_1_3_ae'),
-        ('levelup', 'wnfae2014_1_2_ae')
+        #('levelup', 'wnfae2014_1_2_ae')
     )
-    # Need to add SCR
+    # NLBC
+    nlbc = (
+        # 2014
+        ('nextlevel', 'nlbc89usf4'),
+        ('nextlevel', 'nlbc88usf4'),
+        ('nextlevel', 'nlbc87usf4'),
+        ('nextlevel', 'nlbc86_usf4'),
+        ('nextlevel', 'nlbc85_usf4'),
+        ('nextlevel', 'nlbc84usf4'),
+        ('nextlevel', 'nlbc83_usf4'),
+        ('nextlevel', 'nlbc82usf4'),
+        ('nextlevel', 'nlbc81usf4'),
+        ('nextlevel', 'nlbc80usf4'),
+        ('nextlevel', 'nlbc79usf4'),
+        ('nextlevel', 'nlbc78usf4'),
+        ('nextlevel', 'nlbc77usf4'),
+        ('nextlevel', 'nlbc76usf4'),
+        ('nextlevel', 'nlbc75usf4'),
+        ('nextlevel', 'nlbc74usf4'),
+        ('nextlevel', 'nlbc73usf4'),
+        ('nextlevel', 'nlbc72ae2012'),
+        ('nextlevel', 'nlbc71ae2012'),
+        ('nextlevel', 'nlbc70ae2012'),
+        ('nextlevel', 'nlbc69ae2012'),
+        ('nextlevel', 'nlbc68ae2012'),
+        ('nextlevel', 'nlbc67ae2012'),
+        ('nextlevel', 'NLBC66AE2012'),
+        ('nextlevel', 'nlbc65ae2012'),
+        ('nextlevel', 'nlbc64ae2012'),
+        ('nextlevel', 'nlbc63ae2012'),
+        ('nextlevel', 'nlbc62ae2012'),
+        ('nextlevel', 'NLBC61AE2012'),
+        ('nextlevel', 'nlbc60ae2012'),
+        ('nextlevel', 'NLBC59AE2012'),
+        ('nextlevel', 'NLBC58AE2012'),
+        ('nextlevel', 'NLBC57AE2012'),
+        ('nextlevel', 'NLBC56AE2012'),
+        ('nextlevel', 'NLBC55AE2012'),
+        ('nextlevel', 'NLBC54AE2012'),
+        ('nextlevel', 'NLBC53AE2012'),
+        #('nextlevel', 'NLBC52AE2012')
+    )
+
+
+    for subdomain, url in nlbc:
+        try:
+            print "Processing: " + str(url)
+            process_tournament(subdomain, url)
+        except Exception as err:
+            print "Load Error"
+            print err
 
     for subdomain, url in wnf:
         try:
@@ -69,6 +119,10 @@ def initial_elastic_load():
         except Exception as err:
             print "Load Error"
             print err
+
+
+#initial_elastic_load()
+
 
 """
 This needs to be added to the mapping configuration file
