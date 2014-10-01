@@ -27,9 +27,12 @@ def process_tournament(subdomain, url):
     create_player_data(tournament_data['DATA'], index, doc_type)
 
 
-def initial_elastic_load():
+def initial_elastic_load(set_to_load="all"):
+    sets = {}
     # Wednesday Night Fights URLS
-    wnf = (
+    sets['wnf'] = (
+        # 2014
+
         # Season 3
         ('levelup', 'wnf2014_3_1_usf4'),
         ('levelup', 'wnf2014_3_2_usf4'),
@@ -58,10 +61,124 @@ def initial_elastic_load():
         ('levelup', 'wnfae2014_1_5_ae'),
         ('levelup', 'wnfae2014_1_4_ae'),
         ('levelup', 'wnfae2014_1_3_ae'),
-        #('levelup', 'wnfae2014_1_2_ae')
+        ('levelup', 'wnfae2014_1_2_ae'),
+        # 2013
+
+        # Season 5
+        ('levelup', 'wnfae2013_5_7_ae'),
+        ('levelup', 'wnfae2013_5_6_ae'),
+        ('levelup', 'wnfae2013_5_5_ae'),
+        ('levelup', 'wnfae2013_5_4_ae'),
+        ('levelup', 'wnfae2013_5_3_ae'),
+        ('levelup', 'wnfae2013_5_1_ae'),
+        # Season 4
+        ('levelup', 'wnfae2013_4_6_ae'),
+        ('levelup', 'wnfae2013_4_5_ae'),
+        ('levelup', 'wnfae2013_4_4_ae'),
+        ('levelup', 'wnfae2013_4_3_ae'),
+        ('levelup', 'wnfae2013_4_1_ae'),
+        # Season 3
+        ('levelup', 'wnfae2013_ae_3_5'),
+        ('levelup', 'wnfae2013_ae_3_4'),
+        ('levelup', 'wnfae2013_ae_3_3'),
+        ('levelup', 'wnfae2013_ae_3_1'),
+        # Season 2
+        ('levelup', 'wnfae2013_ae_2_7'),
+        ('levelup', 'wnfae2013_ae_2_4'),
+        ('levelup', 'wnfae2013_ae_2_3'),
+        # Season 1
+        ('levelup', 'wnfae2013_1_13_ae_se'),
+        ('levelup', 'wnfae2013_1_12_ae_se'),
+        ('levelup', 'wnfae2013_ae_1_11_se'),
+        ('levelup', 'wnfae2013_ae_1_9_se'),
+        ('levelup', 'wnfae2013_ae_1_8_se'),
+        ('levelup', 'wnfae2013_ae_1_7_se'),
+        ('levelup', 'wnfae2013_ae_1_6_se'),
+        ('levelup', 'wnfae2013_ae_1_5_se'),
+        ('levelup', 'wnfae2013_ae_1_4_se'),
+        ('levelup', 'wnfae2013_ae_1_3_s'),
+        ('levelup', 'wnfae2013_ae_1_2_s'),
+        ('levelup', 'wnfae2013_ae_1_1_s'),
+
+        # 2012
+        # Season 6
+        ('levelup', 'wnfae_ae_6_3'),
+        # Season 5
+        ('levelup', 'wnfae_ae_5_6'),
+        ('levelup', 'wnfae_ae_5_5'),
+        # Season 4
+        ('levelup', 'wnfae2012_ae_4_4'),
+        ('levelup', 'wnfae2012_AE_4_3'),
+        ('levelup', 'wnfae2012_ae_4_2'),
+        ('levelup', 'wnfae2012_ae_4_1'),
+        # 4th of July
+        ('levelup', 'wnfae_ae_4th'),
+        # Season 3
+        ('levelup', 'wnfae_AE_3_7'),
+        ('levelup', 'wnfae_AE_3_6'),
+        ('levelup', 'wnfae_AE_3_5'),
+        ('levelup', 'wnfae_AE_3_4'),
+        ('levelup', 'wnfae_AE_3_3'),
+        ('levelup', 'ae_3_2'),
+        # Season 2
+        ('levelup', 'ae_2_7'),
+        ('levelup', 'wnfae_AE_2_6')
     )
     # NLBC
-    nlbc = (
+    sets['nlbc'] = (
+        # 2013
+        ('nextlevel', 'NLBC1AE'),
+        ('nextlevel', 'NLBC2AE'),
+        ('nextlevel', 'NLBC3AE'),
+        ('nextlevel', 'NLBC4AE'),
+        ('nextlevel', 'NLBC5AE'),
+        ('nextlevel', 'NLBC6AE2012'),
+        ('nextlevel', 'NLBC7AE2012'),
+        ('nextlevel', 'NLBC8AE2012'),
+        ('nextlevel', 'NLBC9AE2012'),
+        ('nextlevel', 'NLBC10AE2012'),
+        ('nextlevel', 'NLBC11AE2012'),
+        ('nextlevel', 'NLBC12AE2012'),
+        ('nextlevel', 'NLBC13AE2012'),
+        ('nextlevel', 'NLBC14AE2012'),
+        ('nextlevel', 'NLBC15AE2013'),
+        ('nextlevel', 'NLBC16AE2012'),
+        ('nextlevel', 'NLBC17AE2012'),
+        ('nextlevel', 'NLBC18AE2012'),
+        ('nextlevel', 'NLBC19AE2012'),
+        ('nextlevel', 'NLBC20AE2012'),
+        ('nextlevel', 'NLBC21AE2012'),
+        ('nextlevel', 'NLBC22AE2012'),
+        ('nextlevel', 'NLBC23AE2012'),
+        ('nextlevel', 'NLBC24AE2012'),
+        ('nextlevel', 'NLBC25AE2012'),
+        ('nextlevel', 'NLBC26AE2012'),
+        ('nextlevel', 'NLBC27AE2012'),
+        ('nextlevel', 'NLBC28AE2012'),
+        ('nextlevel', 'NLBC29AE2012'),
+        ('nextlevel', 'NLBC30AE2012'),
+        ('nextlevel', 'NLBC31AE2012'),
+        ('nextlevel', 'NLBC32AE2012'),
+        ('nextlevel', 'NLBC33AE2012'),
+        ('nextlevel', 'NLBC34AE2012'),
+        ('nextlevel', 'NLBC35AE2012'),
+        ('nextlevel', 'NLBC36AE2012'),
+        ('nextlevel', 'NLBC37AE2012'),
+        ('nextlevel', 'NLBC38AE2012'),
+        ('nextlevel', 'NLBC39AE2012'),
+        ('nextlevel', 'NLBC40AE2012'),
+        ('nextlevel', 'NLBC41AE2012'),
+        ('nextlevel', 'NLBC42AE2012'),
+        ('nextlevel', 'NLBC43AE2012'),
+        ('nextlevel', 'NLBC44AE2012'),
+        ('nextlevel', 'NLBC45AE2012'),
+        ('nextlevel', 'NLBC46AE2012'),
+        ('nextlevel', 'NLBC47AE2012'),
+        ('nextlevel', 'NLBC48AE2012'),
+        ('nextlevel', 'NLBC49AE2012'),
+        ('nextlevel', 'NLBC50AE2012'),
+        ('nextlevel', 'NLBC51AE2012'),
+
         # 2014
         ('nextlevel', 'nlbc89usf4'),
         ('nextlevel', 'nlbc88usf4'),
@@ -100,28 +217,107 @@ def initial_elastic_load():
         ('nextlevel', 'NLBC55AE2012'),
         ('nextlevel', 'NLBC54AE2012'),
         ('nextlevel', 'NLBC53AE2012'),
-        #('nextlevel', 'NLBC52AE2012')
+        ('nextlevel', 'NLBC52AE2012')
+    )
+    # Big Two
+    sets['bigtwo'] = (
+        # 2012
+        ('nextlevel', 'bigtwo27ae'),
+        ('nextlevel', 'bigtwo29ae'),
+        ('nextlevel', 'bigtwo30ae'),
+        ('nextlevel', 'bigtwo31ae'),
+        ('nextlevel', 'bigtwo32ae'),
+        ('nextlevel', 'bigtwo33ae'),
+        ('nextlevel', 'bigtwo35AE'),
+        ('nextlevel', 'bigtwo36ae'),
+        ('nextlevel', 'bigtwo37ae'),
+        ('nextlevel', 'bigtwo38AE'),
+        ('nextlevel', 'bigtwo39ae'),
+        ('nextlevel', 'Bigtwo40AE'),
+        ('nextlevel', 'bigtwo41AE'),
+        ('nextlevel', 'bigtwo42ae'),
+        ('nextlevel', 'bigtwo43ae'),
+        ('nextlevel', 'bigtwo44ae'),
+        ('nextlevel', 'bigtwo45ae'),
+        ('nextlevel', 'bigtwo47ae'),
+        ('nextlevel', 'bigtwo48AE'),
+        ('nextlevel', 'bigtwo49AE'),
+        ('nextlevel', 'bigtwo50AE'),
+        ('nextlevel', 'bigtwo51AE'),
+        ('nextlevel', 'bigtwo52AE'),
+        ('nextlevel', 'bigtwo53ae'),
+        ('nextlevel', 'bigtwo54AE'),
+        ('nextlevel', 'bigtwo55AE'),
+        ('nextlevel', 'bigtwo56AE'),
+        ('nextlevel', 'bigtwo57AE'),
+        ('nextlevel', 'bigtwo58AE')
+    )
+    # Majors
+    sets['majors'] = (
+        # Sega Cup
+        ('levelup', 'segacup2014_pool1'),
+        ('levelup', 'segacup2014_pool2'),
+        ('levelup', 'segacup2014_pool3'),
+        ('levelup', 'segacup2014_pool4'),
+        ('levelup', 'segacup2014_pool5'),
+        ('levelup', 'segacup2014_pool6'),
+        ('levelup', 'segacup2014_pool7'),
+        ('levelup', 'segacup2014_pool8'),
+        ('levelup', 'segacup2014_top16'),
+        # SoCal Regionals 2014
+        ('levelup', 'scr2014_ae_pool1'),
+        ('levelup', 'scr2014_ae_pool2'),
+        ('levelup', 'scr2014_ae_pool3'),
+        ('levelup', 'scr2014_ae_pool4'),
+        ('levelup', 'scr2014_ae_pool5'),
+        ('levelup', 'scr2014_ae_pool6'),
+        ('levelup', 'scr2014_ae_pool7'),
+        ('levelup', 'scr2014_ae_pool8'),
+        ('levelup', 'scr2014_ae_pool9'),
+        ('levelup', 'scr2014_ae_pool10'),
+        ('levelup', 'scr2014_ae_pool11'),
+        ('levelup', 'scr2014_ae_pool12'),
+        ('levelup', 'scr2014_ae_pool13'),
+        ('levelup', 'scr2014_ae_pool14'),
+        ('levelup', 'scr2014_ae_pool15'),
+        ('levelup', 'scr2014_ae_pool16'),
+        ('levelup', 'scr2014_ae_top32'),
+        ('levelup', 'scr2014_ae_top8'),
+        # Sega Cup 2013
+        ('levelup', 'segacup_top16'),
+        ('levelup', 'segacup_pool1'),
+        ('levelup', 'segacup_pool2'),
+        ('levelup', 'segacup_pool3'),
+        ('levelup', 'segacup_pool4'),
+        ('levelup', 'segacup_pool5'),
+        ('levelup', 'segacup_pool6'),
+        ('levelup', 'segacup_pool7'),
+        ('levelup', 'segacup_pool8'),
+        # SoCal Regionals 2013
+        ('levelup', 'ae_top32_scr2013'),
+        # SoCal Regionals 2011
+        ('levelup', 'scr2011_ssf4ae'),
     )
 
+    # Process one set of subdomain/url sets for tournaments
+    def processSet(set_to_process):
+        print ("Processing: " + set_to_process)
+        for subdomain, url in sets[set_to_process]:
+            try:
+                print "Processing: " + str(url)
+                process_tournament(subdomain, url)
+            except Exception as err:
+                print "Load Error"
+                print err
 
-    for subdomain, url in nlbc:
-        try:
-            print "Processing: " + str(url)
-            process_tournament(subdomain, url)
-        except Exception as err:
-            print "Load Error"
-            print err
+    # Process all sets if nothing is passed to initial load func.
+    if set_to_load == "all":
+        for key in sets.keys():
+            processSet(key)
+    else:
+        processSet(set_to_load)
 
-    for subdomain, url in wnf:
-        try:
-            print "Processing: " + str(url)
-            process_tournament(subdomain, url)
-        except Exception as err:
-            print "Load Error"
-            print err
-
-
-#initial_elastic_load()
+initial_elastic_load('majors')
 
 
 """

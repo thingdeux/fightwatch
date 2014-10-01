@@ -12,13 +12,14 @@ JScript: Event Timer for refresh after 10 minutes. (Maybe) - 'Catch DB Refresh?'
 
 
 ---ElasticSearch
+	Don't track pool victories as major victories.
+	
 	Figure out how to push the mapping during index creation programmatically
-	write quick front-end to interact with this data.
-	Finish importing NLBC data
-	Import Any data from Majors
+	write quick front-end to interact with this data.	
 	Setup MongoDB (or Redis) DB
 	Setup ElasticSearch instances on RemoteBox
 	Configure subdomain for interaction w/ ES
+
 
 
 
