@@ -2,7 +2,7 @@ Test Insert id=1 on info checker
 Error checking / soft recovery for everything:
 	*DB not working
 	*No results after DB query
-	*Malformed json responce from twitch api
+	*Malformed json response from twitch api
 
 
 Low:
@@ -13,15 +13,23 @@ JScript: Event Timer for refresh after 10 minutes. (Maybe) - 'Catch DB Refresh?'
 
 ---ElasticSearch
 	Don't track pool victories as major victories.
-
 	Figure out how to push the mapping during index creation programmatically
 	write quick front-end to interact with this data.	
 	Setup MongoDB (or Redis) DB
 	Setup ElasticSearch instances on RemoteBox
 	Configure subdomain for interaction w/ ES
+	
+	Dev Notes:
+		es.count(index="levelup", q="(name: snake) AND (outcome: WIN)")
 
 
-	es.count(index="levelup", q="(name: snake) AND (outcome: WIN)")
+[--Queries to create--]
+	Fighter Totals (Win/Loss record)
+	Match History (All - Versus) -- (Secondary queue field for other player)
+	Tournament History (_type == tournament)
+	Most Wins Overall
+	Most Losses Overall	
+	
 
 
 

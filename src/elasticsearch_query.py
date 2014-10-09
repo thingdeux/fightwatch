@@ -30,9 +30,11 @@ def match_query_by_name(name):
         final_names = set([
             results['fields']['name'][0]for results in query['hits']['hits']])
 
-        print final_names
+        return final_names
+
     except Exception as err:
         print err
+        return ("No Results Found or Major Error")
 
 if __name__ == "__main__":
     argument = sys.argv[1]

@@ -15,7 +15,7 @@ class main_site(object):
     def getCDN(self, server_mode):
         # Returns CDN location if server mode is prod, else dev static dir.
         if server_mode == "dev":
-            return("static")
+            return("/static")
         else:
             return ("http://cdn.fight.watch")
 
@@ -27,7 +27,7 @@ class main_site(object):
 
     def loading(self):
         # Loading page:
-        #    should only be rendered in case of new feeds being fetched.
+        # Should only be rendered in case of new feeds being fetched.
         template = env.get_template('loading.html')
         return template.render(cdn_environment=self.getCDN(server_mode))
 
@@ -64,9 +64,42 @@ class main_site(object):
         return template.render(cdn_environment=self.getCDN(server_mode))
     thanks.exposed = True
 
-    def stats(self, *args):
-        template = env.get_template('stats.html')
-        return template.render(cdn_environment=self.getCDN(server_mode))
+    def fighter(self, name=None, *args):
+        # No Name is passed to fighter, return index for fighter template
+        if name is None:
+            if len(name) < 1:
+                template = env.get_template('byFighter.html')
+                return template.render(
+                    cdn_environment=self.getCDN(server_mode))
+        else:
+            results = match_query_by_name(name)
+            if len(results) > 1:
+                template = env.get_template('byFighter.html')
+                return template.render(cdn_environment=self.getCDN(server_mode),
+                                       name=name,
+                                       results=results)
+            else:
+                template = env.get_template('byFighter.html')
+                return template.render(cdn_environment=self.getCDN(server_mode),
+                                       name=name,
+                                       results=results)
+
+    # Stats Index Handler for ElasticSearch Fight.Watch DB
+    def stats(self, route=None, **kwargs):
+        # If no route is chosen return index
+        if route is None:
+            template = env.get_template('stats.html')
+            return template.render(cdn_environment=self.getCDN(server_mode))
+        # Url is <domain>/stats/fighter
+        elif route == "fighter":
+            try:
+                # Only accepts the 'name' GET parameter, otherwise index
+                name = kwargs['name']
+            except:
+                template = env.get_template('stats.html')
+                return template.render(
+                    cdn_environment=self.getCDN(server_mode))
+            return self.fighter(name)
     stats.exposed = True
 
     def checkDB(self):
