@@ -86,15 +86,12 @@ def process_tournament_matches(subdomain, tournament_url):
             final_data['DATA'].append(
                 {
                     "index": final_data['INDEX'],
-                    "doc_type": "matches",
                     "matches": player.matches,
-                    "body": {
-                        "name": player.name,
-                        "tournament": tournament_name,
-                        "date": tournament_date,
-                        "set_history": player.opponent_history,
-                        "placed": player.final_rank
-                    },
+                    "name": player.name,
+                    "tournament": tournament_name,
+                    "date": tournament_date,
+                    "set_history": player.opponent_history,
+                    "placed": player.final_rank,
                     "sets": player.opponent_history
                 }
             )

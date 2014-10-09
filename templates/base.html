@@ -3,7 +3,7 @@
 <meta content="utf-8" http-equiv="encoding">
 <html>
   <head>
-    <title>Fight.Watch</title> 
+    <title>{%block title%}Fight.Watch{%endblock%}</title> 
     <link href="http://netdna.bootstrapcdn.com/bootstrap/3.1.1/css/bootstrap.min.css" rel="stylesheet" type ="text/css">
     <link href="{{cdn_environment}}/css/base.min.css" rel="stylesheet" type ="text/css">
     <link rel="shortcut icon" href="{{cdn_environment}}/favicon.ico"/>
@@ -23,7 +23,9 @@
       </div>
       <div class="navbar-collapse collapse">
         <ul class="nav navbar-nav">
+          {% block overwrite_navbar %}
           <li class="active"><a class = "site_modify_link" data-target="All" href="#">All</a></li>
+          {% endblock %}
           {% block navbar %}
           	
           {% endblock %}

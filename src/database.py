@@ -5,13 +5,14 @@ from sqlalchemy import (create_engine, Column, Integer, String,
 from sqlalchemy.ext.declarative import declarative_base
 from sqlalchemy.orm import sessionmaker
 from datetime import datetime
-from cred import getDB
+from cred import getDB, setEnv, getEnv
 
 """
 Cred.py is not stored in the repo, it returns a string that has the server info
 Ex: "mysql+mysqldb://" + USER + ":" + PASS + "@" + HOST + ":" + PORT + "/" + DB
 """
-engine = create_engine(getDB('prod'))
+
+engine = create_engine(getDB('dev'))
 Base = declarative_base()
 Session = sessionmaker(bind=engine)
 

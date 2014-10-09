@@ -13,7 +13,7 @@ JScript: Event Timer for refresh after 10 minutes. (Maybe) - 'Catch DB Refresh?'
 
 ---ElasticSearch
 	Don't track pool victories as major victories.
-	
+
 	Figure out how to push the mapping during index creation programmatically
 	write quick front-end to interact with this data.	
 	Setup MongoDB (or Redis) DB
@@ -21,7 +21,7 @@ JScript: Event Timer for refresh after 10 minutes. (Maybe) - 'Catch DB Refresh?'
 	Configure subdomain for interaction w/ ES
 
 
-
+	es.count(index="levelup", q="(name: snake) AND (outcome: WIN)")
 
 
 

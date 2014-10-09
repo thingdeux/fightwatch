@@ -1,30 +1,31 @@
 from challonge_parse import process_tournament_matches
 from elasticsearch import Elasticsearch
-
-# Connect to elasticsearch client
-es = Elasticsearch()
-
-
-def create_player_data(player_data, index, doc_type):
-    test = 'Coming'
+import json
+import sys
+# Cred is not included in the repo. Holds DB and elasticsearch connection info
+from cred import get_elastic
 
 
-def create_match_data(player_data, index, doc_type):
+def create_player_data(player_data, index):
+    print player_data['sets']
+
+
+def create_match_data(player_data, index):
     for player in player_data:
+        create_player_data(player, index)
+        # Index (add) each match into elasticsearch
         for match in player['matches']:
-            es.index(id=None,
-                     index=player['index'],
-                     doc_type=player['doc_type'],
-                     body=match)
+            get_elastic().index(id=None,
+                                index=player['index'],
+                                doc_type="matches",
+                                body=match)
 
 
 def process_tournament(subdomain, url):
     # Get Tournament data back as JSON
     tournament_data = process_tournament_matches(subdomain, url)
     index = tournament_data['INDEX']
-    doc_type = tournament_data['DOC_TYPE']
-    create_match_data(tournament_data['DATA'], index, doc_type)
-    create_player_data(tournament_data['DATA'], index, doc_type)
+    create_match_data(tournament_data['DATA'], index)
 
 
 def initial_elastic_load(set_to_load="all"):
@@ -40,6 +41,7 @@ def initial_elastic_load(set_to_load="all"):
         ('levelup', 'wnf2014_3_4_usf4'),
         ('levelup', 'wnf2014_3_5_usf4'),
         ('levelup', 'wnfae2014_3_6_usf4'),
+        ('levelup', 'wnfae2014_3_7_usf4'),
         # Season 2
         ('levelup', 'wnfae2014_2_11_usf4'),
         ('levelup', 'wnfae2014_2_10_usf4'),
@@ -180,6 +182,7 @@ def initial_elastic_load(set_to_load="all"):
         ('nextlevel', 'NLBC51AE2012'),
 
         # 2014
+        ('nextlevel', 'nlbc90usf4'),
         ('nextlevel', 'nlbc89usf4'),
         ('nextlevel', 'nlbc88usf4'),
         ('nextlevel', 'nlbc87usf4'),
@@ -317,8 +320,9 @@ def initial_elastic_load(set_to_load="all"):
     else:
         processSet(set_to_load)
 
-initial_elastic_load('majors')
-
+if __name__ == "__main__":
+    load_type = sys.argv[1]
+    initial_elastic_load(load_type)
 
 """
 This needs to be added to the mapping configuration file

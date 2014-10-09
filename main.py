@@ -4,6 +4,7 @@ import os
 import sys
 from jinja2 import Environment, PackageLoader
 from src.database import createSchema, getStreams, checkLoading
+from src.elasticsearch_query import match_query_by_name
 
 the_current_folder = os.path.dirname(os.path.abspath(__file__))
 env = Environment(loader=PackageLoader('main', 'templates'))
@@ -62,6 +63,11 @@ class main_site(object):
         template = env.get_template('thanks.html')
         return template.render(cdn_environment=self.getCDN(server_mode))
     thanks.exposed = True
+
+    def stats(self, *args):
+        template = env.get_template('stats.html')
+        return template.render(cdn_environment=self.getCDN(server_mode))
+    stats.exposed = True
 
     def checkDB(self):
         # Return boolean for whether or not the DB is able to connect.
