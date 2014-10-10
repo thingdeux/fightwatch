@@ -4,7 +4,7 @@ import os
 import sys
 from jinja2 import Environment, PackageLoader
 from src.database import createSchema, getStreams, checkLoading
-from src.elasticsearch_query import match_query_by_name
+from src.elasticsearch_query import match_query_by_name, get_fighter_winloss
 
 the_current_folder = os.path.dirname(os.path.abspath(__file__))
 env = Environment(loader=PackageLoader('main', 'templates'))
@@ -66,17 +66,16 @@ class main_site(object):
 
     def fighter(self, name=None, combined=False, *args):
         results = match_query_by_name(name)
-        print results
         return results
 
     # Stats Index Handler for ElasticSearch Fight.Watch DB
-    def stats(self, route=None, **kwargs):
+    def stats(self, route=None, generate=None, **kwargs):
         # If no route is chosen return index
         if route is None:
             template = env.get_template('stats.html')
             return template.render(cdn_environment=self.getCDN(server_mode))
         # Url is <domain>/stats/fighter
-        elif route == "fighter":
+        elif route == "fighter" and generate is None:
             try:
                 # Only accepts the 'name' GET parameter, otherwise index
                 name = kwargs['name']
@@ -85,6 +84,9 @@ class main_site(object):
                 return template.render(
                     cdn_environment=self.getCDN(server_mode))
             return self.fighter(name)
+        elif route == "fighter" and generate == "generate":
+            stats = get_fighter_winloss(kwargs['q'])
+            return stats
     stats.exposed = True
 
     def checkDB(self):
