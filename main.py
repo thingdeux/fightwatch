@@ -64,25 +64,10 @@ class main_site(object):
         return template.render(cdn_environment=self.getCDN(server_mode))
     thanks.exposed = True
 
-    def fighter(self, name=None, *args):
-        # No Name is passed to fighter, return index for fighter template
-        if name is None:
-            if len(name) < 1:
-                template = env.get_template('byFighter.html')
-                return template.render(
-                    cdn_environment=self.getCDN(server_mode))
-        else:
-            results = match_query_by_name(name)
-            if len(results) > 1:
-                template = env.get_template('byFighter.html')
-                return template.render(cdn_environment=self.getCDN(server_mode),
-                                       name=name,
-                                       results=results)
-            else:
-                template = env.get_template('byFighter.html')
-                return template.render(cdn_environment=self.getCDN(server_mode),
-                                       name=name,
-                                       results=results)
+    def fighter(self, name=None, combined=False, *args):
+        results = match_query_by_name(name)
+        print results
+        return results
 
     # Stats Index Handler for ElasticSearch Fight.Watch DB
     def stats(self, route=None, **kwargs):
@@ -96,7 +81,7 @@ class main_site(object):
                 # Only accepts the 'name' GET parameter, otherwise index
                 name = kwargs['name']
             except:
-                template = env.get_template('stats.html')
+                template = env.get_template('queries/fighter_query.html')
                 return template.render(
                     cdn_environment=self.getCDN(server_mode))
             return self.fighter(name)

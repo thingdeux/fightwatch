@@ -7,8 +7,8 @@ import sys
 def match_query_by_name(name):
     query = {
         "query": {
-            "fuzzy": {
-                "name": "*" + name + "*"
+            "match": {
+                "name": str(name).lower()
             }
         }
     }
@@ -30,7 +30,13 @@ def match_query_by_name(name):
         final_names = set([
             results['fields']['name'][0]for results in query['hits']['hits']])
 
-        return final_names
+        # Create a python dictionary of the individual names as
+        # JSON conversation of sets is not possible.
+        to_return = {
+            "names": [x for x in final_names]
+        }
+
+        return json.dumps(to_return)
 
     except Exception as err:
         print err

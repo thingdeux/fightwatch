@@ -1,3 +1,11 @@
+HIGH: 
+	Sanitize query input
+
+LOW:
+	Write Unit Tests
+	JScript: Event Timer for refresh after 10 minutes. (Maybe) - 'Catch DB Refresh?'
+
+
 Test Insert id=1 on info checker
 Error checking / soft recovery for everything:
 	*DB not working
@@ -5,9 +13,6 @@ Error checking / soft recovery for everything:
 	*Malformed json response from twitch api
 
 
-Low:
-Write Unit Tests
-JScript: Event Timer for refresh after 10 minutes. (Maybe) - 'Catch DB Refresh?'
 
 
 
