@@ -1,0 +1,16 @@
+{% extends "stats.html" %}
+
+{% block stats %}
+    <div class="col-md-2 text-center"></div>
+    <div class="col-md-8 text-center">
+        {% if results|length > 0 %}
+            <h2><u>Totals for "{{ name|title }}"</u></h2>
+        {% else %}
+            <h2> Sorry, no Data Found for "{{name }}"</h2>
+        {% endif %}
+        <div class="row">
+            <div id = "results"></div>            
+        </div>
+    </div>
+    <div class="col-md-2 text-center"></div>
+{% endblock %}

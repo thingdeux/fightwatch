@@ -1,0 +1,53 @@
+{% extends "stats.html" %}
+
+{% block stats %}
+    <div class="col-md-3 text-center">        
+    </div>
+    <div class="col-md-6 text-center">      
+        <h2>Search for a Fighter by name</h2>
+        <div class="row">
+            <div class="col-md-3"></div>
+            <div class="col-md-6">
+                <form class="name_searcher">
+                    <div class="input-group">                    
+                            <span class="input-group-btn">
+                                <button type="button" class="btn btn-primary search_it">Search</button>                
+                            </span>
+
+                            <input type="text" name="name" class="form-control search_it"></input>
+
+                            <span class="input-group-btn">
+                                <button id="generate" type="button" class="btn btn-primary generate_it">Generate</button>
+                            </span>                    
+                    </div>
+                </form>
+            </div>
+            <div class="col-md-3"></div>
+        </div>        
+    </div>
+    <div class="col-md-3 text-center">
+        <div class="row">
+            <div class="col-md-12">
+                <h4>Select any aliases</h4>
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="col-md-2"></div>
+            <div class="col-md-8">
+                <form>
+                    <input type="hidden" id="queried" />
+                    <table class="table-condensed table-responsive" name="names" id="results">
+                        <tr><th>Include?</th>
+                        <th align="center">Alias</th></tr>
+                    </table>
+                </form>
+            </div>
+            <div class="col-md-2"></div>
+        </div>
+    </div>
+{% endblock %}
+
+{% block extrajs %}
+    <script src="{{cdn_environment}}/js/stats.js"></script>
+{% endblock %}
